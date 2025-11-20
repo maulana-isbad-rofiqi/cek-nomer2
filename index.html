@@ -6,14 +6,12 @@
   <title>Tools - Cek Nomer & Kuota XL & Axis</title>
   
   <meta name="google-adsense-account" content="ca-pub-6900623206484427">
-  
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6900623206484427"
      crossorigin="anonymous"></script>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  
   <link rel="stylesheet" href="./assets/css/style.css">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
@@ -24,13 +22,9 @@
   
   <div class="main-container">
     <div id="beranda-content"></div>
-    
     <div id="cek-kuota-content"></div>
-    
     <div id="cek-myip-content"></div>
-    
     <div id="cek-iphost-content"></div>
-    
     <div id="converter-content"></div>
   </div>
   
@@ -62,9 +56,25 @@
       loadComponent('./pages/cek-iphost.html', 'cek-iphost-content'),
       loadComponent('./pages/converter.html', 'converter-content')
     ]).then(() => {
-      // Initialize app after all components loaded
+      // 1. Inisialisasi Aplikasi (Event Listener, dll)
       const event = new Event('DOMContentLoaded');
       document.dispatchEvent(event);
+
+      // 2. INISIALISASI MANUAL ADSENSE (WAJIB ADA)
+      // Ini berfungsi "membangunkan" iklan setelah HTML dimasukkan lewat Javascript
+      setTimeout(() => {
+        try {
+            // Cari semua elemen dengan class 'adsbygoogle'
+            var ads = document.getElementsByClassName("adsbygoogle");
+            
+            // Loop dan push request iklan untuk setiap slot yang ditemukan
+            for (var i = 0; i < ads.length; i++) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        } catch (e) {
+            console.log("AdSense Push Error:", e);
+        }
+      }, 500); // Beri jeda 0.5 detik agar DOM benar-benar siap
     });
   </script>
 </body>
