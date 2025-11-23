@@ -795,6 +795,16 @@ const App = {
   },
 
   initSpeedTest() {
+    // Add clear history button
+    const clearHistoryBtn = document.getElementById('clearHistory');
+    if (clearHistoryBtn) {
+      clearHistoryBtn.onclick = () => {
+        localStorage.removeItem('speedTestHistory');
+        this.updateTestHistory();
+        this.showNotification('Riwayat test berhasil dihapus', 'success');
+      };
+    }
+    
     document.getElementById('btnStartTest').onclick = () => {
       this.startSpeedTest();
     };
@@ -1070,11 +1080,12 @@ const App = {
 
   updateGauge(gaugeFill, speed) {
     const percentage = Math.min((speed / 100) * 100, 100);
-    const color = speed > 50 ? 'var(--success)' : speed > 20 ? 'var(--warning)' : 'var(--error)';
-    const glowColor = speed > 50 ? 'rgba(16, 185, 129, 0.4)' : 
-                     speed > 20 ? 'rgba(245, 158, 11, 0.4)' : 
-                     'rgba(239, 68, 68, 0.4)';
+    const color = speed > 50 ? '#10b981' : speed > 20 ? '#f59e0b' : '#ef4444';
+    const glowColor = speed > 50 ? 'rgba(16, 185, 129, 0.6)' : 
+                     speed > 20 ? 'rgba(245, 158, 11, 0.6)' : 
+                     'rgba(239, 68, 68, 0.6)';
     
+    // Update gauge background with modern gradient
     gaugeFill.parentElement.style.background = `conic-gradient(
       ${color} 0deg,
       ${color} ${percentage * 3.6}deg,
@@ -1082,17 +1093,26 @@ const App = {
       rgba(255, 255, 255, 0.1) 360deg
     )`;
     
-    // Add glow effect based on speed
+    // Add enhanced glow effect
     gaugeFill.parentElement.style.boxShadow = `
-      0 0 30px ${glowColor},
-      inset 0 0 20px rgba(0, 0, 0, 0.3)
+      0 0 50px ${glowColor},
+      0 0 20px ${glowColor},
+      inset 0 0 30px rgba(0, 0, 0, 0.3)
     `;
     
-    // Update speed value with color coding
+    // Update speed value with enhanced styling
     const speedValue = document.getElementById('speedValue');
     if (speedValue) {
       speedValue.style.color = color;
-      speedValue.style.textShadow = `0 0 10px ${color}`;
+      speedValue.style.textShadow = `0 0 20px ${color}`;
+      speedValue.style.transition = 'all 0.3s ease';
+    }
+    
+    // Add pulse animation for high speeds
+    if (speed > 80) {
+      gaugeFill.parentElement.classList.add('pulse');
+    } else {
+      gaugeFill.parentElement.classList.remove('pulse');
     }
   },
 
@@ -1115,23 +1135,63 @@ const App = {
     const history = JSON.parse(localStorage.getItem('speedTestHistory') || '[]');
     
     if (history.length === 0) {
-      historyContainer.innerHTML = '<p style="text-align:center; color:#aaa;">Belum ada riwayat test</p>';
+      historyContainer.innerHTML = `
+        <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+          <i class="fa-solid fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+          <p>Belum ada riwayat test</p>
+          <p style="font-size: 0.9rem; margin-top: 0.5rem;">Mulai test pertama Anda untuk melihat riwayat</p>
+        </div>
+      `;
       return;
     }
     
-    const historyHtml = history.map(test => `
-      <div class="history-item">
-        <div class="history-details">
-          <h4>${new Date(test.timestamp).toLocaleString('id-ID')}</h4>
-          <p>📥 Download: ${test.download.toFixed(2)} Mbps</p>
-          <p>📤 Upload: ${test.upload.toFixed(2)} Mbps</p>
+    const historyHtml = history.map((test, index) => {
+      const speedColor = test.download > 50 ? 'var(--success)' : test.download > 25 ? 'var(--warning)' : 'var(--error)';
+      const speedQuality = test.download > 50 ? 'Sangat Cepat' : test.download > 25 ? 'Cepat' : test.download > 10 ? 'Sedang' : 'Lambat';
+      
+      return `
+        <div class="history-item" style="
+          background: var(--bg-card);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: var(--radius-xl);
+          padding: 1.5rem;
+          margin-bottom: 1rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: all var(--transition-normal);
+        ">
+          <div class="history-details">
+            <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; font-weight: 600;">
+              ${new Date(test.timestamp).toLocaleString('id-ID')}
+            </h4>
+            <p style="color: var(--text-secondary); margin: 0.25rem 0;">
+              <i class="fa-solid fa-download" style="color: var(--primary); margin-right: 0.5rem;"></i>
+              Download: ${test.download.toFixed(2)} Mbps
+            </p>
+            <p style="color: var(--text-secondary); margin: 0.25rem 0;">
+              <i class="fa-solid fa-upload" style="color: var(--primary); margin-right: 0.5rem;"></i>
+              Upload: ${test.upload.toFixed(2)} Mbps
+            </p>
+            <p style="color: var(--text-secondary); margin: 0.25rem 0;">
+              <i class="fa-solid fa-clock" style="color: var(--warning); margin-right: 0.5rem;"></i>
+              Ping: ${test.ping}ms
+            </p>
+          </div>
+          <div class="history-speed" style="text-align: right;">
+            <div style="font-size: 2rem; font-weight: 800; color: ${speedColor}; margin-bottom: 0.5rem;">
+              ${test.download.toFixed(1)}
+            </div>
+            <div style="font-size: 0.9rem; color: ${speedColor}; font-weight: 600; margin-bottom: 0.25rem;">
+              ${speedQuality}
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">
+              Mbps
+            </div>
+          </div>
         </div>
-        <div class="history-speed">
-          <div class="download">${test.download.toFixed(1)}</div>
-          <div class="ping">${test.ping}ms</div>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
     
     historyContainer.innerHTML = historyHtml;
   },
