@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek IP Host - XL Tools</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="brand"><i class="fa-solid fa-bolt"></i> XL TOOLS</a>
+        <div class="nav-links">
+            <a href="index.html">Beranda</a>
+            <a href="cek-kuota.html">Cek Kuota</a>
+            <a href="cek-iphost.html" class="active">IP Host</a>
+            <a href="converter.html">Converter</a>
+        </div>
+        <button class="hamburger" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" id="closeMobile">&times;</button>
+        <a href="index.html">Beranda</a>
+        <a href="cek-kuota.html">Cek Kuota</a>
+        <a href="cek-iphost.html">IP Host</a>
+        <a href="converter.html">Converter</a>
+    </div>
+
+    <div class="container" id="page-ip-host">
+        <div class="card">
+            <h2 style="text-align:center; margin-bottom:1.5rem;">Cek IP Hostname</h2>
+            <input type="text" id="inputHost" placeholder="Masukan Host (contoh: google.com)">
+            <button class="btn" id="btnHost">Cari IP</button>
+        </div>
+        <div class="card">
+            <textarea id="textOutput" rows="10" readonly placeholder="Hasil akan muncul disini..."></textarea>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
