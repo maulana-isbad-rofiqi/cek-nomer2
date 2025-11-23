@@ -1,81 +1,61 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools - Cek Nomer & Kuota XL & Axis</title>
-  
-  <meta name="google-adsense-account" content="ca-pub-6900623206484427">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6900623206484427"
-     crossorigin="anonymous"></script>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="./assets/css/style.css">
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - XL Tools</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  
-  <div id="components-container"></div>
-  
-  <div class="main-container">
-    <div id="beranda-content"></div>
-    <div id="cek-kuota-content"></div>
-    <div id="cek-myip-content"></div>
-    <div id="cek-iphost-content"></div>
-    <div id="converter-content"></div>
-  </div>
-  
-  <script src="./assets/js/telegram.js"></script>
-  <script src="./assets/js/api.js"></script>
-  <script src="./assets/js/converter.js"></script>
-  <script src="./assets/js/slider.js"></script>
-  <script src="./assets/js/clock.js"></script>
-  <script src="./assets/js/navigation.js"></script>
-  <script src="./assets/js/main.js"></script>
-  
-  <script>
-    async function loadComponent(url, containerId) {
-      try {
-        const response = await fetch(url);
-        const html = await response.text();
-        document.getElementById(containerId).innerHTML = html;
-      } catch (error) {
-        console.error(`Error loading ${url}:`, error);
-      }
-    }
+    <nav class="navbar">
+        <a href="index.html" class="brand"><i class="fa-solid fa-bolt"></i> XL TOOLS</a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Beranda</a>
+            <a href="cek-kuota.html">Cek Kuota</a>
+            <a href="cek-iphost.html">IP Host</a>
+            <a href="converter.html">Converter</a>
+        </div>
+        <button class="hamburger" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+    </nav>
     
-    // Load all components
-    Promise.all([
-      loadComponent('./pages/components.html', 'components-container'),
-      loadComponent('./pages/beranda.html', 'beranda-content'),
-      loadComponent('./pages/cek-kuota.html', 'cek-kuota-content'),
-      loadComponent('./pages/cek-myip.html', 'cek-myip-content'),
-      loadComponent('./pages/cek-iphost.html', 'cek-iphost-content'),
-      loadComponent('./pages/converter.html', 'converter-content')
-    ]).then(() => {
-      // 1. Inisialisasi Aplikasi (Event Listener, dll)
-      const event = new Event('DOMContentLoaded');
-      document.dispatchEvent(event);
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" id="closeMobile">&times;</button>
+        <a href="index.html">Beranda</a>
+        <a href="cek-kuota.html">Cek Kuota</a>
+        <a href="cek-iphost.html">IP Host</a>
+        <a href="converter.html">Converter</a>
+    </div>
 
-      // 2. INISIALISASI MANUAL ADSENSE (WAJIB ADA)
-      // Ini berfungsi "membangunkan" iklan setelah HTML dimasukkan lewat Javascript
-      setTimeout(() => {
-        try {
-            // Cari semua elemen dengan class 'adsbygoogle'
-            var ads = document.getElementsByClassName("adsbygoogle");
-            
-            // Loop dan push request iklan untuk setiap slot yang ditemukan
-            for (var i = 0; i < ads.length; i++) {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            }
-        } catch (e) {
-            console.log("AdSense Push Error:", e);
-        }
-      }, 500); // Beri jeda 0.5 detik agar DOM benar-benar siap
-    });
-  </script>
+    <div class="container" id="page-home">
+        
+        <div style="text-align:center; margin-bottom:2rem;">
+            <h1 id="clockTime" style="font-size:3rem; font-family:monospace;">00:00:00</h1>
+            <p id="clockDate" style="color:#aaa;">Loading...</p>
+        </div>
+
+        <div class="slider-container">
+            <div class="slide active" style="background-image: url('https://blob.cloudcomputing.id/images/1c171b3f-d8ef-439d-a451-82e5c062b932/xl-axiata-l-min.jpg');"></div>
+            <div class="slide" style="background-image: url('https://cdn1-production-images-kly.akamaized.net/vJ5c8PBJEccEe1i6Z3bz_moF214=/0x423:2084:1597/500x281/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/4187699/original/030502400_1665474605-AXIS_Kenapanggak_Logo-02.jpg');"></div>
+        </div>
+
+        <div class="grid-menu">
+            <a href="cek-kuota.html" class="menu-item">
+                <i class="fa-solid fa-signal"></i> Cek Kuota
+            </a>
+            <a href="cek-iphost.html" class="menu-item">
+                <i class="fa-solid fa-globe"></i> Cek IP Host
+            </a>
+            <a href="converter.html" class="menu-item">
+                <i class="fa-solid fa-rotate"></i> Converter
+            </a>
+            <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" class="menu-item">
+                <i class="fa-brands fa-whatsapp"></i> Grup Paket
+            </a>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
