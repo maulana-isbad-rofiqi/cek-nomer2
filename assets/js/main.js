@@ -1,36 +1,132 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Wait for DOM to be fully ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+  } else {
+    initializeApp();
+  }
+});
+
+function initializeApp() {
+  // Clear any existing state to prevent conflicts
+  App.cleanup();
   App.init();
   App.createParticles();
   App.addScrollEffects();
   App.initPWA();
-});
+}
 
 const App = {
+  currentPage: null,
+  
+  cleanup() {
+    // Clear intervals and timeouts to prevent conflicts
+    this.clearAllIntervals();
+    
+    // Reset page state
+    this.currentPage = null;
+    
+    // Remove event listeners that might conflict
+    const menu = document.getElementById('mobileNav');
+    if (menu) {
+      menu.classList.remove('active');
+    }
+  },
+  
+  clearAllIntervals() {
+    // Clear any existing intervals
+    const intervals = window.setInterval(() => {}, 0);
+    for (let i = 0; i <= intervals; i++) {
+      clearInterval(i);
+    }
+  },
+  
   init() {
     this.setupUI();
-    // Deteksi halaman aktif
-    if(document.getElementById('page-home')) this.initHome();
-    if(document.getElementById('page-kuota')) this.initKuota();
-    if(document.getElementById('page-myip')) this.initMyIp();
-    if(document.getElementById('page-host')) this.initHost();
-    if(document.getElementById('page-speedtest')) this.initSpeedTest();
-    if(document.getElementById('page-networktools')) this.initNetworkTools();
-    if(document.getElementById('page-convert')) this.initConvert();
+    this.initPageDetection();
+  },
+  
+  initPageDetection() {
+    // Deteksi halaman aktif dengan lebih robust
+    if(document.getElementById('page-home')) {
+      this.currentPage = 'home';
+      this.initHome();
+    } else if(document.getElementById('page-kuota')) {
+      this.currentPage = 'kuota';
+      this.initKuota();
+    } else if(document.getElementById('page-myip')) {
+      this.currentPage = 'myip';
+      this.initMyIp();
+    } else if(document.getElementById('page-host')) {
+      this.currentPage = 'host';
+      this.initHost();
+    } else if(document.getElementById('page-speedtest')) {
+      this.currentPage = 'speedtest';
+      this.initSpeedTest();
+    } else if(document.getElementById('page-networktools')) {
+      this.currentPage = 'networktools';
+      this.initNetworkTools();
+    } else if(document.getElementById('page-convert')) {
+      this.currentPage = 'convert';
+      this.initConvert();
+    }
   },
 
   setupUI() {
-    // Menu Mobile
-    const menu = document.getElementById('mobileNav');
-    document.getElementById('btnMenu')?.addEventListener('click', () => {
-      menu.classList.add('active');
-      this.animateMenu(true);
-    });
-    document.getElementById('btnClose')?.addEventListener('click', () => {
-      menu.classList.remove('active');
-      this.animateMenu(false);
-    });
+    // Setup mobile menu with proper event handling
+    this.setupMobileMenu();
     
-    // Static Clock
+    // Setup clock only on homepage
+    if(document.getElementById('digitalClock')) {
+      this.setupClock();
+    }
+    
+    // Prevent unwanted page reloads
+    this.preventNavigationConflicts();
+  },
+  
+  setupMobileMenu() {
+    const menu = document.getElementById('mobileNav');
+    const btnMenu = document.getElementById('btnMenu');
+    const btnClose = document.getElementById('btnClose');
+    
+    // Remove existing event listeners to prevent conflicts
+    if (btnMenu) {
+      btnMenu.onclick = null;
+      btnMenu.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if(menu) {
+          menu.classList.add('active');
+          this.animateMenu(true);
+        }
+      });
+    }
+    
+    if (btnClose) {
+      btnClose.onclick = null;
+      btnClose.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if(menu) {
+          menu.classList.remove('active');
+          this.animateMenu(false);
+        }
+      });
+    }
+    
+    // Close menu when clicking outside
+    if (menu) {
+      menu.addEventListener('click', (e) => {
+        if (e.target === menu) {
+          menu.classList.remove('active');
+          this.animateMenu(false);
+        }
+      });
+    }
+  },
+  
+  setupClock() {
     const clock = document.getElementById('digitalClock');
     if(clock) {
       const updateClock = () => {
@@ -41,8 +137,36 @@ const App = {
                            </div>`;
       };
       updateClock(); // Initial call
-      setInterval(updateClock, 1000);
+      
+      // Clear existing interval if any
+      if (this.clockInterval) {
+        clearInterval(this.clockInterval);
+      }
+      
+      this.clockInterval = setInterval(updateClock, 1000);
     }
+  },
+  
+  preventNavigationConflicts() {
+    // Prevent form submissions from causing page reloads
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
+    
+    // Ensure all navigation links work properly
+    const navLinks = document.querySelectorAll('.nav-link, .mobile-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Let normal navigation happen but prevent conflicts
+        if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) {
+          e.preventDefault();
+        }
+      });
+    });
   },
 
   createParticles() {
@@ -77,52 +201,82 @@ const App = {
   },
 
   addScrollEffects() {
+    // Clear existing scroll listener to prevent conflicts
+    if (this.scrollListenerAdded) {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
+    
     const navbar = document.querySelector('.navbar');
     let lastScrollTop = 0;
+    let scrollTimeout;
 
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // Navbar scroll effect
-      if (scrollTop > 100) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-
-      // Hide/show navbar on scroll
-      if (scrollTop > lastScrollTop && scrollTop > 200) {
-        navbar.style.transform = 'translateY(-100%)';
-      } else {
-        navbar.style.transform = 'translateY(0)';
-      }
-      lastScrollTop = scrollTop;
-
-      // Parallax effect for cards
-      const cards = document.querySelectorAll('.card-glass, .feature-card');
-      cards.forEach((card, index) => {
-        const cardTop = card.offsetTop;
-        const cardHeight = card.offsetHeight;
-        const windowHeight = window.innerHeight;
-        const scrollTop = window.pageYOffset;
+    this.handleScroll = () => {
+      // Throttle scroll events for better performance
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         
-        if (scrollTop + windowHeight > cardTop && scrollTop < cardTop + cardHeight) {
-          const yPos = (scrollTop - cardTop) * 0.1;
-          card.style.transform = `translateY(${yPos}px)`;
+        // Navbar scroll effect
+        if (navbar) {
+          if (scrollTop > 100) {
+            navbar.classList.add('scrolled');
+          } else {
+            navbar.classList.remove('scrolled');
+          }
+
+          // Hide/show navbar on scroll (only on mobile)
+          if (window.innerWidth <= 768) {
+            if (scrollTop > lastScrollTop && scrollTop > 200) {
+              navbar.style.transform = 'translateY(-100%)';
+            } else {
+              navbar.style.transform = 'translateY(0)';
+            }
+          }
         }
-      });
-    });
+        
+        lastScrollTop = scrollTop;
+
+        // Simplified parallax effect (only on desktop)
+        if (window.innerWidth > 768) {
+          const cards = document.querySelectorAll('.card-glass, .feature-card');
+          cards.forEach((card) => {
+            const cardTop = card.offsetTop;
+            const cardHeight = card.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            if (scrollTop + windowHeight > cardTop && scrollTop < cardTop + cardHeight) {
+              const yPos = (scrollTop - cardTop) * 0.05; // Reduced intensity
+              card.style.transform = `translateY(${yPos}px)`;
+            }
+          });
+        }
+      }, 16); // ~60fps
+    };
+
+    window.addEventListener('scroll', this.handleScroll);
+    this.scrollListenerAdded = true;
   },
 
   animateMenu(show) {
+    // Prevent concurrent animations
+    if (this.menuAnimating) return;
+    this.menuAnimating = true;
+    
     const menu = document.getElementById('mobileNav');
+    if (!menu) {
+      this.menuAnimating = false;
+      return;
+    }
+    
     const links = menu.querySelectorAll('.mobile-link');
     
     if (show) {
       links.forEach((link, index) => {
         setTimeout(() => {
-          link.style.transform = 'translateX(0)';
-          link.style.opacity = '1';
+          if (menu.classList.contains('active')) {
+            link.style.transform = 'translateX(0)';
+            link.style.opacity = '1';
+          }
         }, index * 100);
       });
     } else {
@@ -131,6 +285,11 @@ const App = {
         link.style.opacity = '0';
       });
     }
+    
+    // Reset animation flag
+    setTimeout(() => {
+      this.menuAnimating = false;
+    }, 500);
   },
 
   sendTele(msg) {
@@ -584,6 +743,14 @@ const App = {
   },
 
   showNotification(message, type = 'info') {
+    // Prevent multiple notifications at once
+    if (this.notificationShowing) return;
+    this.notificationShowing = true;
+    
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notif => notif.remove());
+    
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -599,6 +766,8 @@ const App = {
       transform: translateX(400px);
       transition: all 0.3s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      max-width: 300px;
+      word-wrap: break-word;
     `;
     notification.textContent = message;
     
@@ -606,17 +775,22 @@ const App = {
     
     // Animate in
     setTimeout(() => {
-      notification.style.transform = 'translateX(0)';
+      if (notification.parentNode) {
+        notification.style.transform = 'translateX(0)';
+      }
     }, 100);
     
     // Remove after 3 seconds
     setTimeout(() => {
-      notification.style.transform = 'translateX(400px)';
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
-        }
-      }, 300);
+      if (notification.parentNode) {
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+          this.notificationShowing = false;
+        }, 300);
+      }
     }, 3000);
   },
 
@@ -967,19 +1141,33 @@ const App = {
   },
 
   initPWA() {
-    // PWA Install Prompt
+    // PWA Install Prompt - only on HTTPS or localhost
+    if (!this.isSecureContext || !window.PWA_ENABLED) return;
+    
     let deferredPrompt;
     
-    window.addEventListener('beforeinstallprompt', (e) => {
+    // Remove existing listeners to prevent conflicts
+    window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
+    window.removeEventListener('appinstalled', this.handleAppInstalled);
+    
+    this.handleInstallPrompt = (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      this.showInstallPrompt();
-    });
+      // Only show on homepage
+      if (this.currentPage === 'home') {
+        this.showInstallPrompt();
+      }
+    };
 
-    window.addEventListener('appinstalled', (e) => {
+    this.handleAppInstalled = () => {
       this.showNotification('🎉 XL Tools berhasil diinstall!', 'success');
-    });
+    };
+
+    window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+    window.addEventListener('appinstalled', this.handleAppInstalled);
   },
+  
+  isSecureContext: window.isSecureContext,
 
   showInstallPrompt() {
     // Show install prompt after 30 seconds if not already installed
