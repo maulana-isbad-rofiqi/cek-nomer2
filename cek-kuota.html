@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Kuota - XL Tools</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="brand"><i class="fa-solid fa-bolt"></i> XL TOOLS</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Beranda</a>
+                <a href="cek-kuota.html" class="nav-link active">Cek Kuota</a>
+                <a href="cek-myip.html" class="nav-link">My IP</a>
+                <a href="cek-iphost.html" class="nav-link">IP Host</a>
+                <a href="speed-test.html" class="nav-link">Speed Test</a>
+                <a href="converter.html" class="nav-link">Converter</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" class="btn-wa">
+                    <i class="fa-brands fa-whatsapp"></i> <span>Paket Murah</span>
+                </a>
+                <button class="hamburger" id="btnMenu"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobileNav">
+        <button class="close-menu" id="btnClose">&times;</button>
+        <a href="index.html" class="mobile-link">Beranda</a>
+        <a href="cek-kuota.html" class="mobile-link">Cek Kuota</a>
+        <a href="cek-myip.html" class="mobile-link">My IP</a>
+        <a href="cek-iphost.html" class="mobile-link">IP Host</a>
+        <a href="speed-test.html" class="mobile-link">Speed Test</a>
+        <a href="converter.html" class="mobile-link">Converter</a>
+    </div>
+
+    <div class="main-container" id="page-kuota">
+        <div class="card-glass">
+            <h2 style="text-align:center; margin-bottom:20px;">Cek Kuota XL/Axis</h2>
+            <input type="tel" id="inputNum" class="input-field" placeholder="Masukan Nomor (0878...)">
+            <button id="btnCek" class="btn-primary">Cek Sekarang</button>
+            <div id="result" class="result-box"></div>
+        </div>
+    </div>
+    
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
