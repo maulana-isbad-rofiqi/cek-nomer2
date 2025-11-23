@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek MyIP - XL Tools Pro</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My IP - XL Tools</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -19,36 +18,29 @@
                 <a href="converter.html" class="nav-link">Converter</a>
             </div>
             <div class="nav-actions">
-                <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" class="btn-small-glow">
-                    <i class="fa-brands fa-whatsapp"></i> Paket Murah
+                <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" class="btn-wa">
+                    <i class="fa-brands fa-whatsapp"></i> <span>Paket Murah</span>
                 </a>
                 <button class="hamburger" id="btnMenu"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
     </nav>
-
     <div class="mobile-menu" id="mobileNav">
         <button class="close-menu" id="btnClose">&times;</button>
         <a href="index.html" class="mobile-link">Beranda</a>
         <a href="cek-kuota.html" class="mobile-link">Cek Kuota</a>
         <a href="cek-myip.html" class="mobile-link">My IP</a>
-        <a href="cek-iphost.html" class="mobile-link">IP Host</a>
-        <a href="converter.html" class="mobile-link">Converter</a>
     </div>
 
     <div class="main-container" id="page-myip">
-        <div class="card-glass" style="text-align: center;">
-            <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-location-dot"></i> IP Publik Saya</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Klik tombol di bawah untuk melihat detail koneksi internet Anda.</p>
-            
-            <button id="btnMyIp" class="btn-primary" style="max-width: 300px;">
-                <i class="fa-solid fa-eye"></i> Tampilkan IP Saya
-            </button>
-            
-            <div id="resultIp" class="result-box" style="text-align: left; margin-top: 2rem;"></div>
+        <div class="card-glass" style="text-align:center;">
+            <h2>IP Publik Saya</h2>
+            <p style="color:#aaa; margin-bottom:20px;">Klik untuk melihat detail koneksi Anda</p>
+            <button id="btnMyIp" class="btn-primary" style="max-width:200px;">Cek IP</button>
+            <div id="resultIp" class="result-box" style="text-align:left;"></div>
         </div>
     </div>
-
+    
     <script src="assets/js/config.js"></script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/main.js"></script>
