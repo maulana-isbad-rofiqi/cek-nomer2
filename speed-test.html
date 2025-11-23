@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Test - XL Tools</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="brand"><i class="fa-solid fa-bolt"></i> XL TOOLS</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Beranda</a>
+                <a href="cek-kuota.html" class="nav-link">Cek Kuota</a>
+                <a href="cek-myip.html" class="nav-link">My IP</a>
+                <a href="cek-iphost.html" class="nav-link">IP Host</a>
+                <a href="speed-test.html" class="nav-link active">Speed Test</a>
+                <a href="converter.html" class="nav-link">Converter</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" class="btn-wa">
+                    <i class="fa-brands fa-whatsapp"></i> <span>Paket Murah</span>
+                </a>
+                <button class="hamburger" id="btnMenu"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="mobile-menu" id="mobileNav">
+        <button class="close-menu" id="btnClose">&times;</button>
+        <a href="index.html" class="mobile-link">Beranda</a>
+        <a href="cek-kuota.html" class="mobile-link">Cek Kuota</a>
+        <a href="cek-myip.html" class="mobile-link">My IP</a>
+        <a href="cek-iphost.html" class="mobile-link">IP Host</a>
+        <a href="speed-test.html" class="mobile-link">Speed Test</a>
+        <a href="converter.html" class="mobile-link">Converter</a>
+    </div>
+
+    <div class="main-container" id="page-speedtest">
+        <div class="card-glass" style="text-align:center;">
+            <h2 style="margin-bottom: 20px;">
+                <i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Internet Speed Test
+            </h2>
+            <p style="color:#aaa; margin-bottom: 30px;">
+                Test kecepatan internet Anda dengan akurasi tinggi
+            </p>
+            
+            <div class="speed-test-container">
+                <div class="speed-gauge">
+                    <div class="gauge-circle">
+                        <div class="gauge-fill" id="gaugeFill"></div>
+                        <div class="gauge-center">
+                            <div class="speed-value" id="speedValue">0</div>
+                            <div class="speed-unit">Mbps</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="speed-info">
+                    <div class="info-item">
+                        <span class="info-label">Download</span>
+                        <span class="info-value" id="downloadSpeed">0.00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Upload</span>
+                        <span class="info-value" id="uploadSpeed">0.00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Ping</span>
+                        <span class="info-value" id="pingValue">--</span>
+                    </div>
+                </div>
+                
+                <button id="btnStartTest" class="btn-primary" style="max-width: 300px; margin-top: 20px;">
+                    <i class="fa-solid fa-play"></i> Mulai Test
+                </button>
+            </div>
+            
+            <div id="testStatus" style="margin-top: 20px; color: #aaa;"></div>
+        </div>
+        
+        <div class="card-glass">
+            <h3 style="margin-bottom: 15px;">
+                <i class="fa-solid fa-chart-line"></i> Riwayat Test
+            </h3>
+            <div id="testHistory" class="history-container">
+                <p style="text-align:center; color:#aaa;">Belum ada riwayat test</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
