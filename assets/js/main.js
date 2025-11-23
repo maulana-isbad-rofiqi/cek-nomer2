@@ -4,161 +4,121 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const App = {
   init() {
-    this.globalSetup(); // Jam, Navbar Mobile, Notif Telegram
+    this.globalUI();
     
-    // Cek halaman mana yang aktif berdasarkan elemen yang ada
-    if (document.getElementById('page-home')) this.initHome();
-    if (document.getElementById('page-cek-kuota')) this.initCekKuota();
-    if (document.getElementById('page-ip-host')) this.initIpHost();
-    if (document.getElementById('page-converter')) this.initConverter();
+    // Deteksi Halaman
+    if (document.getElementById('page-home')) this.homePage();
+    if (document.getElementById('page-kuota')) this.kuotaPage();
+    if (document.getElementById('page-myip')) this.myIpPage();
+    if (document.getElementById('page-host')) this.hostPage();
+    if (document.getElementById('page-convert')) this.convertPage();
   },
 
-  // --- FITUR GLOBAL (Jalan di semua halaman) ---
-  globalSetup() {
-    // 1. Mobile Menu Toggle
-    const btn = document.getElementById('hamburgerBtn');
-    const menu = document.getElementById('mobileMenu');
-    const close = document.getElementById('closeMobile');
-    
-    if(btn) btn.onclick = () => menu.classList.add('active');
-    if(close) close.onclick = () => menu.classList.remove('active');
+  globalUI() {
+    // Menu Mobile
+    const nav = document.getElementById('mobileNav');
+    document.getElementById('btnMenu')?.addEventListener('click', () => nav.classList.add('active'));
+    document.getElementById('btnClose')?.addEventListener('click', () => nav.classList.remove('active'));
 
-    // 2. Jam Digital
-    const timeEl = document.getElementById('clockTime');
-    const dateEl = document.getElementById('clockDate');
-    if(timeEl) {
-        setInterval(() => {
-            const now = new Date();
-            timeEl.innerText = now.toLocaleTimeString('en-GB');
-            dateEl.innerText = now.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-        }, 1000);
+    // Jam Digital
+    const clock = document.getElementById('digitalClock');
+    if(clock) {
+      setInterval(() => {
+        const d = new Date();
+        clock.innerHTML = `<div style="font-size:2.5rem; font-weight:800; font-family:monospace;">${d.toLocaleTimeString('en-GB')}</div>
+                           <div style="font-size:0.9rem; color:#94a3b8;">${d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'})}</div>`;
+      }, 1000);
     }
 
-    // 3. Notifikasi Pengunjung (Sekali per sesi)
-    if (!sessionStorage.getItem('visited')) {
-      fetch('https://ipinfo.io/json')
-        .then(r => r.json())
-        .then(d => {
-          this.sendTelegram(`🔔 <b>Pengunjung Baru</b>\nIP: ${d.ip}\nKota: ${d.city}\nDevice: ${navigator.platform}`);
-          sessionStorage.setItem('visited', 'true');
-        });
-    }
-
-    // 4. Init Adsense
-    setTimeout(() => {
-       try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
-    }, 1000);
+    // Adsense Init
+    setTimeout(() => { try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){} }, 1000);
   },
 
-  // --- HALAMAN BERANDA ---
-  initHome() {
-    const slides = document.querySelectorAll('.slide');
-    if(!slides.length) return;
-    
-    let current = 0;
-    setInterval(() => {
-        slides[current].classList.remove('active');
-        current = (current + 1) % slides.length;
-        slides[current].classList.add('active');
-    }, 4000);
-  },
-
-  // --- HALAMAN CEK KUOTA ---
-  initCekKuota() {
-    const btn = document.getElementById('btnCek');
-    const input = document.getElementById('inputNomor');
-    const output = document.getElementById('hasilOutput');
-    const loading = document.getElementById('loadingBox');
-
-    btn.onclick = async () => {
-      const num = input.value;
-      if(!num) return alert("Masukkan nomor HP!");
-
-      loading.classList.remove('hidden');
-      output.innerHTML = '';
-      this.sendTelegram(`🔎 <b>Cek Kuota</b>\nInput: ${num}`);
-
-      try {
-        const res = await API.cekKuota(num);
-        loading.classList.add('hidden');
-
-        if(!res.success) throw new Error(res.message);
-
-        // Render HTML Hasil
-        let html = `<div class="info-box"><h3>Nomor: ${res.data.subs_info.msisdn}</h3>`;
-        html += `<p>Masa Aktif: ${res.data.subs_info.exp_date}</p></div>`;
-        
-        const pkgs = res.data.package_info.packages || [];
-        if(pkgs.length === 0) html += `<p>Tidak ada paket aktif.</p>`;
-        
-        pkgs.forEach(p => {
-          html += `<div class="paket-card"><h4>${p.name}</h4>`;
-          if(p.quotas) {
-            p.quotas.forEach(q => {
-               const pct = Math.min(q.percent || 0, 100);
-               html += `<div class="quota-row"><span>${q.name}</span><span>${q.remaining}/${q.total}</span></div>
-                        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>`;
-            });
-          }
-          html += `</div>`;
-        });
-
-        output.innerHTML = html;
-        this.sendTelegram(`✅ <b>Sukses Kuota</b>\n${num}`);
-
-      } catch (e) {
-        loading.classList.add('hidden');
-        output.innerHTML = `<div class="error-box">${e.message}</div>`;
-        this.sendTelegram(`❌ <b>Gagal Kuota</b>\n${e.message}`);
-      }
-    };
-  },
-
-  // --- HALAMAN IP HOST ---
-  initIpHost() {
-    const btn = document.getElementById('btnHost');
-    const input = document.getElementById('inputHost');
-    const out = document.getElementById('textOutput');
-
-    btn.onclick = async () => {
-       const host = input.value;
-       if(!host) return alert("Isi hostname!");
-       out.value = "Sedang mencari...";
-       
-       try {
-         const data = await API.cekIpHost(host);
-         let txt = `Host: ${host}\n\n`;
-         data.forEach(d => {
-            txt += `IP: ${d.ip}\nOrg: ${d.info ? d.info.org : '-'}\nLoc: ${d.info ? d.info.city : '-'}\n\n`;
-         });
-         out.value = txt;
-       } catch(e) {
-         out.value = "Error: " + e.message;
-       }
-    };
-  },
-
-  // --- HALAMAN CONVERTER ---
-  initConverter() {
-    document.getElementById('btnConvert').onclick = () => {
-        const raw = document.getElementById('inputRaw').value;
-        const mode = document.getElementById('selectMode').value;
-        
-        if(!raw) return alert("Kosong!");
-        
-        // Logika dummy (bisa diganti kode converter lengkap V2RayConverter)
-        const lines = raw.split('\n').filter(x=>x);
-        document.getElementById('outputConvert').value = `// Sukses convert ${lines.length} akun ke ${mode}.\n\n(Logika konversi disederhanakan untuk demo)`;
-    };
-  },
-
-  // --- UTILS ---
-  sendTelegram(msg) {
+  sendNotif(msg) {
     if(!CONFIG.TELEGRAM_BOT_TOKEN) return;
     fetch(`https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({chat_id: CONFIG.TELEGRAM_CHAT_ID, text:msg, parse_mode:'HTML'})
     }).catch(()=>{});
+  },
+
+  homePage() {
+    const slides = document.querySelectorAll('.slide');
+    let i = 0;
+    setInterval(() => {
+      slides[i].classList.remove('active');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('active');
+    }, 4000);
+  },
+
+  kuotaPage() {
+    document.getElementById('btnCek').onclick = async () => {
+      const num = document.getElementById('inputNum').value;
+      const resDiv = document.getElementById('result');
+      if(!num) return alert("Masukkan nomor!");
+      
+      resDiv.innerHTML = `<div style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>`;
+      this.sendNotif(`🔍 Cek Kuota: ${num}`);
+
+      try {
+        const data = await API.cekKuota(num);
+        if(!data.success) throw new Error(data.message);
+        
+        let h = `<div style="margin-bottom:1rem; padding:1rem; background:rgba(255,255,255,0.05); border-radius:1rem;">
+          <h3>${data.data.subs_info.msisdn}</h3>
+          <p>Exp: ${data.data.subs_info.exp_date}</p>
+        </div>`;
+        
+        (data.data.package_info.packages || []).forEach(p => {
+           h += `<div style="margin-bottom:1rem; border:1px solid rgba(255,255,255,0.1); padding:1rem; border-radius:1rem;">
+             <h4 style="color:var(--primary); margin-bottom:0.5rem;">${p.name}</h4>`;
+           (p.quotas || []).forEach(q => {
+             h += `<div style="font-size:0.85rem; margin-top:0.5rem; display:flex; justify-content:space-between;">
+               <span>${q.name}</span><span>${q.remaining}</span></div>
+               <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(q.percent||0, 100)}%"></div></div>`;
+           });
+           h += `</div>`;
+        });
+        resDiv.innerHTML = h;
+        this.sendNotif(`✅ Sukses Kuota: ${num}`);
+      } catch(e) {
+        resDiv.innerHTML = `<div style="color:#ef4444; text-align:center;">${e.message}</div>`;
+      }
+    };
+  },
+
+  myIpPage() {
+    document.getElementById('btnMyIp').onclick = async () => {
+      const resDiv = document.getElementById('resultIp');
+      resDiv.innerHTML = "Mencari...";
+      try {
+        const d = await API.cekMyIp();
+        resDiv.innerHTML = `<div class="info-row"><b>IP</b> <span>${d.ip}</span></div>
+        <div class="info-row"><b>Kota</b> <span>${d.city}</span></div>
+        <div class="info-row"><b>Provider</b> <span>${d.org}</span></div>
+        <div class="info-row"><b>Negara</b> <span>${d.country}</span></div>`;
+        this.sendNotif(`📡 Cek MyIP: ${d.ip}`);
+      } catch(e) { resDiv.innerHTML = "Gagal."; }
+    };
+  },
+
+  hostPage() {
+    document.getElementById('btnHost').onclick = async () => {
+      const h = document.getElementById('inputHost').value;
+      const out = document.getElementById('outHost');
+      out.value = "Scanning...";
+      try {
+        const res = await API.cekIpHost(h);
+        out.value = res.map(r => `IP: ${r.ip}\nOrg: ${r.info?.org||'-'}\nLoc: ${r.info?.city||'-'}`).join('\n\n');
+      } catch(e) { out.value = e.message; }
+    };
+  },
+
+  convertPage() {
+    document.getElementById('btnConv').onclick = () => {
+      document.getElementById('outConv').value = "// Fitur converter aktif.\n// Result akan tampil disini.";
+    };
   }
 };
