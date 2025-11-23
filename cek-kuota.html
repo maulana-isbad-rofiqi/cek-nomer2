@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Kuota - XL Tools</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="brand"><i class="fa-solid fa-bolt"></i> XL TOOLS</a>
+        <div class="nav-links">
+            <a href="index.html">Beranda</a>
+            <a href="cek-kuota.html" class="active">Cek Kuota</a>
+            <a href="cek-iphost.html">IP Host</a>
+            <a href="converter.html">Converter</a>
+        </div>
+        <button class="hamburger" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" id="closeMobile">&times;</button>
+        <a href="index.html">Beranda</a>
+        <a href="cek-kuota.html">Cek Kuota</a>
+        <a href="cek-iphost.html">IP Host</a>
+        <a href="converter.html">Converter</a>
+    </div>
+
+    <div class="container" id="page-cek-kuota">
+        <div class="card">
+            <h2 style="text-align:center; margin-bottom:1.5rem;">Cek Kuota XL & Axis</h2>
+            <input type="tel" id="inputNomor" placeholder="Masukan Nomor (08xx / 628xx)">
+            <button class="btn" id="btnCek">Cek Sekarang</button>
+            
+            <div id="loadingBox" class="hidden" style="text-align:center; margin-top:1rem;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Memproses...
+            </div>
+        </div>
+
+        <div id="hasilOutput"></div>
+        
+        <div style="text-align:center; margin-top:2rem;">
+             </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
