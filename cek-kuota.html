@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Kuota - XL Tools Pro</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Kuota - XL Tools</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -19,14 +18,13 @@
                 <a href="converter.html" class="nav-link">Converter</a>
             </div>
             <div class="nav-actions">
-                <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" class="btn-small-glow">
-                    <i class="fa-brands fa-whatsapp"></i> Paket Murah
+                <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" class="btn-wa">
+                    <i class="fa-brands fa-whatsapp"></i> <span>Paket Murah</span>
                 </a>
                 <button class="hamburger" id="btnMenu"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
     </nav>
-
     <div class="mobile-menu" id="mobileNav">
         <button class="close-menu" id="btnClose">&times;</button>
         <a href="index.html" class="mobile-link">Beranda</a>
@@ -38,19 +36,13 @@
 
     <div class="main-container" id="page-kuota">
         <div class="card-glass">
-            <h2 style="text-align:center; margin-bottom: 1.5rem;"><i class="fa-solid fa-sim-card"></i> Cek Nomer & Kuota</h2>
-            
-            <input type="tel" id="inputNum" class="input-field" placeholder="Masukkan Nomor (Contoh: 0878... / 628...)">
-            <button id="btnCek" class="btn-primary"><i class="fa-solid fa-search"></i> Cek Sekarang</button>
-            
+            <h2 style="text-align:center; margin-bottom:20px;">Cek Kuota XL/Axis</h2>
+            <input type="tel" id="inputNum" class="input-field" placeholder="Masukan Nomor (0878...)">
+            <button id="btnCek" class="btn-primary">Cek Sekarang</button>
             <div id="result" class="result-box"></div>
         </div>
-
-        <div style="text-align: center; margin-top: 2rem;">
-            <p style="color: var(--text-muted); font-size: 0.8rem;">Data diambil real-time dari server XL/Axis.</p>
-        </div>
     </div>
-
+    
     <script src="assets/js/config.js"></script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/main.js"></script>
