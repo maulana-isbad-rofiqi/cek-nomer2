@@ -1,49 +1,48 @@
 const API = {
-  // Format nomor HP 08/62/8 jadi 628...
   formatPhone(number) {
-    let clean = number.replace(/\D/g, '');
-    if (clean.startsWith('0')) return '62' + clean.slice(1);
-    if (clean.startsWith('8')) return '62' + clean;
-    return clean;
+    let c = number.replace(/\D/g, '');
+    if (c.startsWith('0')) return '62' + c.slice(1);
+    if (c.startsWith('8')) return '62' + c;
+    return c;
   },
 
-  // Cek Kuota lewat Proxy
-  async cekKuota(number) {
-    const formatted = this.formatPhone(number);
-    const targetUrl = `https://bendith.my.id/end.php?check=package&number=${formatted}&version=2`;
-    
-    // Gunakan beberapa proxy cadangan
+  async fetchProxy(url) {
     const proxies = [
-      `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-      `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-      `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(targetUrl)}`
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      `https://corsproxy.io/?${encodeURIComponent(url)}`,
+      `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(url)}`
     ];
-
-    for (const proxy of proxies) {
+    for (const p of proxies) {
       try {
-        const res = await fetch(proxy);
+        const res = await fetch(p);
         if (res.ok) return await res.json();
-      } catch (e) { console.warn('Proxy skip:', proxy); }
+      } catch (e) {}
     }
-    throw new Error('Semua jalur sibuk, coba lagi nanti.');
+    throw new Error('Koneksi sibuk.');
   },
 
-  // Cek IP Host
-  async cekIpHost(hostname) {
-    const dnsRes = await fetch(`https://dns.google/resolve?name=${hostname}`);
-    const dnsData = await dnsRes.json();
+  async cekKuota(number) {
+    const url = `https://bendith.my.id/end.php?check=package&number=${this.formatPhone(number)}&version=2`;
+    return await this.fetchProxy(url);
+  },
+
+  async cekMyIp() {
+    const res = await fetch('https://ipinfo.io/json');
+    if (!res.ok) throw new Error('Gagal ambil IP');
+    return await res.json();
+  },
+
+  async cekIpHost(host) {
+    const res = await fetch(`https://dns.google/resolve?name=${host}`);
+    const data = await res.json();
+    if (!data.Answer) throw new Error('Host tidak valid.');
     
-    if (!dnsData.Answer) throw new Error('Host tidak ditemukan.');
-    
-    // Ambil semua IP
-    const ips = dnsData.Answer.filter(a => a.type === 1 || a.type === 28).map(a => a.data);
-    
-    // Cek detail tiap IP di ipinfo
+    const ips = data.Answer.filter(a => a.type === 1 || a.type === 28).map(a => a.data);
     return Promise.all(ips.map(async ip => {
-       try {
-         const info = await fetch(`https://ipinfo.io/${ip}/json`).then(r => r.json());
-         return { ip, info };
-       } catch { return { ip, info: null }; }
+      try {
+        const info = await fetch(`https://ipinfo.io/${ip}/json`).then(r => r.json());
+        return { ip, info };
+      } catch { return { ip, info: null }; }
     }));
   }
 };
