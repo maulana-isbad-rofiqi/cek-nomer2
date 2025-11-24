@@ -1,0 +1,55 @@
+<!-- Converter Section -->
+<div id="converterSection" class="content-section hidden">
+  <h1 class="section-title">
+    <i class="fa-solid fa-rotate"></i>
+    V2Ray to Clash Converter
+  </h1>
+  <p class="section-desc">
+    Tempelkan link V2Ray (vmess, vless, ss, trojan) satu per baris untuk dikonversi
+  </p>
+
+  <textarea id="convertUrls" 
+            rows="6" 
+            placeholder="vmess://...&#10;vless://...&#10;ss://...&#10;trojan://..." 
+            class="input-field"
+            style="margin-bottom: 1rem;"></textarea>
+
+  <div class="form-group">
+    <select id="convertOutputFormat" class="input-field">
+      <option value="clash_full">Clash (Full Config)</option>
+      <option value="clash_proxies">Clash (Proxies Only)</option>
+      <option value="json">JSON Format</option>
+    </select>
+    <button id="convertBtn" class="btn btn-search">
+      <i class="fa-solid fa-cog"></i>
+      <span>Convert Sekarang</span>
+    </button>
+  </div>
+
+  <div id="convertLoading" class="loading hidden">
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
+    Mengonversi link Anda...
+  </div>
+  
+  <div id="convertError" class="error-msg hidden"></div>
+
+  <div id="convertHasil" class="hidden fade">
+    <div class="result-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 class="result-title" style="margin-bottom: 0;">
+          <i class="fa-solid fa-check-circle"></i>
+          Hasil Konversi
+        </h2>
+        <button id="copyBtn" class="btn btn-copy">
+          <i class="fa-solid fa-copy"></i>
+          <span>Salin</span>
+        </button>
+      </div>
+      
+      <textarea id="convertOutput" 
+                readonly 
+                class="input-field"
+                style="height: 400px; font-family: 'Courier New', monospace; font-size: 0.9rem;"></textarea>
+    </div>
+  </div>
+</div>
