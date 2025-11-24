@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools - Cek Nomer & Kuota XL & Axis</title>
+  
+  <!-- External CSS & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+  
+  <!-- Navigation & Components -->
+  <div id="components-container"></div>
+  
+  <!-- Main Content Container -->
+  <div class="main-container">
+    <!-- Beranda Section -->
+    <div id="beranda-content"></div>
+    
+    <!-- Cek Kuota Section -->
+    <div id="cek-kuota-content"></div>
+    
+    <!-- Cek MyIP Section -->
+    <div id="cek-myip-content"></div>
+    
+    <!-- Cek IP Host Section -->
+    <div id="cek-iphost-content"></div>
+    
+    <!-- Converter Section -->
+    <div id="converter-content"></div>
+  </div>
+  
+  <!-- JavaScript Modules -->
+  <script src="./assets/js/telegram.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script src="./assets/js/converter.js"></script>
+  <script src="./assets/js/slider.js"></script>
+  <script src="./assets/js/clock.js"></script>
+  <script src="./assets/js/navigation.js"></script>
+  <script src="./assets/js/main.js"></script>
+  
+  <!-- Load Page Components -->
+  <script>
+    async function loadComponent(url, containerId) {
+      try {
+        const response = await fetch(url);
+        const html = await response.text();
+        document.getElementById(containerId).innerHTML = html;
+      } catch (error) {
+        console.error(`Error loading ${url}:`, error);
+      }
+    }
+    
+    // Load all components
+    Promise.all([
+      loadComponent('./pages/components.html', 'components-container'),
+      loadComponent('./pages/beranda.html', 'beranda-content'),
+      loadComponent('./pages/cek-kuota.html', 'cek-kuota-content'),
+      loadComponent('./pages/cek-myip.html', 'cek-myip-content'),
+      loadComponent('./pages/cek-iphost.html', 'cek-iphost-content'),
+      loadComponent('./pages/converter.html', 'converter-content')
+    ]).then(() => {
+      // Initialize app after all components loaded
+      const event = new Event('DOMContentLoaded');
+      document.dispatchEvent(event);
+    });
+  </script>
+</body>
+</html>
