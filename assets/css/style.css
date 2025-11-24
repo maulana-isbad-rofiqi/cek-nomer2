@@ -573,21 +573,14 @@ body::after {
   filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.6));
 }
 
-/* Enhanced hover effects for arrow icons */
-.feature-card:hover .fa-arrow-right {
-  opacity: 1 !important;
-  transform: translateX(5px);
-  transition: all 0.3s ease;
-}
-
-/* Badge styles */
-.feature-card > div:first-child {
-  animation: badgePulse 2s ease-in-out infinite;
-}
-
-@keyframes badgePulse {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; }
+/* Enhanced hover effects */
+.feature-card:hover {
+  transform: translateY(-8px);
+  background: rgba(30, 39, 73, 0.6);
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(0, 212, 255, 0.2);
 }
 
 /* Enhanced feature card hover with arrow animation */
