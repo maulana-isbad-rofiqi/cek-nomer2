@@ -1,26 +1,455 @@
 /**
- * Lightweight Main Application Script
- * Optimized for performance and reliability
+ * PWA-Ready Main Application Script
+ * Mobile-first, responsive, and offline-capable
  */
 
+class XLToolsApp {
+  constructor() {
+    this.deferredPrompt = null;
+    this.isOnline = navigator.onLine;
+    this.touchSupported = 'ontouchstart' in window;
+  }
+
+  async init() {
+    console.log('🚀 Initializing XL & Axis Tools PWA...');
+
+    // Initialize PWA features first
+    await this.initPWA();
+
+    // Initialize core modules
+    this.initCoreModules();
+
+    // Initialize page handlers
+    this.initPageHandlers();
+
+    // Initialize UX features
+    this.initUXFeatures();
+
+    // Initialize mobile-specific features
+    this.initMobileFeatures();
+
+    console.log('✅ XL & Axis Tools PWA initialized successfully');
+  }
+
+  async initPWA() {
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js');
+        console.log('📱 Service Worker registered:', registration.scope);
+
+        // Handle updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              this.showUpdateNotification();
+            }
+          });
+        });
+      } catch (error) {
+        console.error('❌ Service Worker registration failed:', error);
+      }
+    }
+
+    // Handle PWA install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      this.deferredPrompt = e;
+      this.showInstallPrompt();
+    });
+
+    // Handle successful installation
+    window.addEventListener('appinstalled', () => {
+      console.log('📱 PWA installed successfully');
+      this.hideInstallPrompt();
+    });
+
+    // Handle online/offline status
+    window.addEventListener('online', () => this.handleOnlineStatus(true));
+    window.addEventListener('offline', () => this.handleOnlineStatus(false));
+  }
+
+  initCoreModules() {
+    initDigitalClock();
+    initSlider();
+    initNavigation();
+  }
+
+  initPageHandlers() {
+    initCekKuota();
+    initCekMyIp();
+    initCekIpHost();
+    initConverter();
+  }
+
+  initUXFeatures() {
+    initSmoothScrolling();
+    initBackToTop();
+    initLoadingScreen();
+  }
+
+  initMobileFeatures() {
+    // Add mobile-specific event listeners
+    if (this.touchSupported) {
+      this.initTouchGestures();
+    }
+
+    // Handle orientation changes
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        this.handleOrientationChange();
+      }, 100);
+    });
+
+    // Handle viewport height changes (iOS Safari)
+    this.initViewportHeightFix();
+
+    // Add pull-to-refresh for mobile
+    this.initPullToRefresh();
+  }
+
+  initTouchGestures() {
+    // Swipe gestures for slider
+    let startX = 0;
+    let startY = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      if (!startX || !startY) return;
+
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      const diffX = startX - endX;
+      const diffY = startY - endY;
+
+      // Horizontal swipe (more significant than vertical)
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          // Swipe left - next slide
+          const nextBtn = document.getElementById('nextSlideBtn');
+          if (nextBtn) nextBtn.click();
+        } else {
+          // Swipe right - previous slide
+          const prevBtn = document.getElementById('prevSlideBtn');
+          if (prevBtn) prevBtn.click();
+        }
+      }
+    }, { passive: true });
+  }
+
+  initViewportHeightFix() {
+    // Fix for iOS Safari viewport height issues
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(setVH, 100);
+    });
+  }
+
+  initPullToRefresh() {
+    let startY = 0;
+    let isPulling = false;
+
+    document.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+      if (window.pageYOffset === 0 && !isPulling) {
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+
+        if (diff > 80) { // Pull threshold
+          isPulling = true;
+          this.showPullIndicator();
+        }
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+      if (isPulling) {
+        isPulling = false;
+        this.hidePullIndicator();
+        window.location.reload(); // Refresh page
+      }
+      startY = 0;
+    }, { passive: true });
+  }
+
+  showPullIndicator() {
+    let indicator = document.getElementById('pull-indicator');
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.id = 'pull-indicator';
+      indicator.innerHTML = '<i class="fas fa-arrow-down"></i> Lepaskan untuk refresh';
+      indicator.style.cssText = `
+        position: fixed;
+        top: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 212, 255, 0.9);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+      `;
+      document.body.appendChild(indicator);
+    }
+    indicator.style.display = 'block';
+  }
+
+  hidePullIndicator() {
+    const indicator = document.getElementById('pull-indicator');
+    if (indicator) {
+      indicator.style.display = 'none';
+    }
+  }
+
+  showInstallPrompt() {
+    // Create install prompt banner
+    const banner = document.createElement('div');
+    banner.id = 'pwa-install-banner';
+    banner.innerHTML = `
+      <div class="install-content">
+        <i class="fas fa-mobile-alt"></i>
+        <div class="install-text">
+          <strong>Install XL Tools</strong>
+          <span>Install sebagai aplikasi untuk pengalaman terbaik</span>
+        </div>
+        <div class="install-actions">
+          <button id="install-btn" class="btn-install">Install</button>
+          <button id="dismiss-btn" class="btn-dismiss">Nanti</button>
+        </div>
+      </div>
+    `;
+
+    banner.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: rgba(10, 14, 39, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 1rem;
+      padding: 1rem;
+      z-index: 1000;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      display: none;
+    `;
+
+    // Add responsive styles
+    const style = document.createElement('style');
+    style.textContent = `
+      .install-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .install-content i {
+        font-size: 1.5rem;
+        color: #00d4ff;
+      }
+      .install-text {
+        flex: 1;
+      }
+      .install-text strong {
+        display: block;
+        color: white;
+        font-size: 0.875rem;
+      }
+      .install-text span {
+        display: block;
+        color: #94a3b8;
+        font-size: 0.75rem;
+      }
+      .install-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .btn-install, .btn-dismiss {
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+      }
+      .btn-install {
+        background: #00d4ff;
+        color: white;
+      }
+      .btn-install:hover {
+        background: #0095ff;
+      }
+      .btn-dismiss {
+        background: rgba(255, 255, 255, 0.1);
+        color: #94a3b8;
+      }
+      .btn-dismiss:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      @media (max-width: 480px) {
+        .install-content {
+          flex-direction: column;
+          text-align: center;
+          gap: 0.5rem;
+        }
+        .install-actions {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+    document.body.appendChild(banner);
+
+    // Show banner with animation
+    setTimeout(() => {
+      banner.style.display = 'block';
+      banner.style.animation = 'slideUp 0.3s ease';
+    }, 2000); // Show after 2 seconds
+
+    // Handle install button
+    document.getElementById('install-btn').addEventListener('click', async () => {
+      if (this.deferredPrompt) {
+        this.deferredPrompt.prompt();
+        const { outcome } = await this.deferredPrompt.userChoice;
+        console.log('📱 Install prompt outcome:', outcome);
+        this.deferredPrompt = null;
+      }
+      this.hideInstallPrompt();
+    });
+
+    // Handle dismiss button
+    document.getElementById('dismiss-btn').addEventListener('click', () => {
+      this.hideInstallPrompt();
+      // Don't show again for 24 hours
+      localStorage.setItem('pwa-install-dismissed', Date.now().toString());
+    });
+  }
+
+  hideInstallPrompt() {
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner) {
+      banner.style.animation = 'slideDown 0.3s ease';
+      setTimeout(() => banner.remove(), 300);
+    }
+  }
+
+  showUpdateNotification() {
+    const notification = document.createElement('div');
+    notification.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(16, 185, 129, 0.9);
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        max-width: 300px;
+      ">
+        <p style="margin: 0 0 0.5rem 0; font-weight: 600;">Update Tersedia</p>
+        <p style="margin: 0 0 1rem 0; font-size: 0.875rem;">Versi terbaru XL Tools telah tersedia.</p>
+        <button id="update-btn" style="
+          background: white;
+          color: #10b981;
+          border: none;
+          padding: 0.375rem 0.75rem;
+          border-radius: 0.25rem;
+          font-weight: 600;
+          cursor: pointer;
+        ">Update Sekarang</button>
+      </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    document.getElementById('update-btn').addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 10000);
+  }
+
+  handleOnlineStatus(isOnline) {
+    this.isOnline = isOnline;
+    console.log(isOnline ? '🌐 Online' : '📴 Offline');
+
+    // Show offline indicator
+    if (!isOnline) {
+      this.showOfflineIndicator();
+    } else {
+      this.hideOfflineIndicator();
+    }
+  }
+
+  showOfflineIndicator() {
+    let indicator = document.getElementById('offline-indicator');
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.id = 'offline-indicator';
+      indicator.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline Mode';
+      indicator.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #ef4444;
+        color: white;
+        text-align: center;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+        z-index: 1000;
+      `;
+      document.body.appendChild(indicator);
+    }
+  }
+
+  hideOfflineIndicator() {
+    const indicator = document.getElementById('offline-indicator');
+    if (indicator) {
+      indicator.remove();
+    }
+  }
+
+  handleOrientationChange() {
+    // Handle orientation changes for mobile
+    console.log('📱 Orientation changed');
+    // Force layout recalculation
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+  }
+}
+
+// Initialize app
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize all modules
-  initDigitalClock();
-  initSlider();
-  initNavigation();
-
-  // Initialize page handlers
-  initCekKuota();
-  initCekMyIp();
-  initCekIpHost();
-  initConverter();
-
-  // Initialize UX features
-  initSmoothScrolling();
-  initBackToTop();
-  initLoadingScreen();
-
-  console.log('🚀 XL & Axis Tools initialized');
+  const app = new XLToolsApp();
+  app.init();
 });
 
 // Digital Clock
