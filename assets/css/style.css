@@ -2090,6 +2090,13 @@ body::after {
   box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
 }
 
+.sidebar-link.active {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(99, 102, 241, 0.2));
+  color: white;
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+}
+
 .nav-link.active::after {
   width: 80%;
   background: linear-gradient(90deg, var(--primary), var(--secondary));

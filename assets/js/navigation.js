@@ -10,14 +10,7 @@ const Navigation = {
   overlay: null,
 
   init() {
-    this.sections = {
-      beranda: document.getElementById('berandaSection'),
-      cekKuota: document.getElementById('cekKuotaSection'),
-      cekMyIp: document.getElementById('cekMyIpSection'),
-      cekIpHost: document.getElementById('cekIpHostSection'),
-      converter: document.getElementById('converterSection')
-    };
-
+    // Initialize navigation buttons
     this.navBtns = {
       beranda: {
         desktop: document.getElementById('berandaNavBtnDesktop'),
@@ -111,33 +104,33 @@ const Navigation = {
   },
 
   showPage(page) {
-    Object.keys(this.sections).forEach(key => {
-      if (this.sections[key]) {
-        if (key === page) {
-          this.sections[key].classList.remove('hidden');
-        } else {
-          this.sections[key].classList.add('hidden');
-        }
+    // Update URL hash for navigation
+    window.location.hash = page;
+
+    // Update active navigation states
+    Object.keys(this.navBtns).forEach(key => {
+      const btns = this.navBtns[key];
+      const isActive = key === page;
+
+      if (btns.desktop) {
+        btns.desktop.classList.toggle('active', isActive);
+      }
+      if (btns.mobile) {
+        btns.mobile.classList.toggle('active', isActive);
       }
     });
 
-    Object.keys(this.navBtns).forEach(key => {
-      const btns = this.navBtns[key];
-      if (btns.desktop) {
-        if (key === page) {
-          btns.desktop.classList.add('nav-active');
-        } else {
-          btns.desktop.classList.remove('nav-active');
-        }
-      }
-      if (btns.mobile) {
-        if (key === page) {
-          btns.mobile.classList.add('nav-active');
-        } else {
-          btns.mobile.classList.remove('nav-active');
-        }
-      }
-    });
+    // Scroll to section if it exists
+    const sectionElement = document.getElementById(`${page}Section`) ||
+                          document.getElementById(`${page}-content`) ||
+                          document.querySelector(`[id*="${page}"]`);
+
+    if (sectionElement) {
+      sectionElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
 
     this.closeSidebar();
   },

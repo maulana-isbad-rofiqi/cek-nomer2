@@ -102,9 +102,9 @@ class App {
 
   async initCoreModules() {
     const modules = [
-      { name: 'DigitalClock', init: () => initDigitalClock() },
-      { name: 'Slider', init: () => initSlider() },
-      { name: 'Navigation', init: () => initNavigation() }
+      { name: 'DigitalClock', init: () => DigitalClock.init() },
+      { name: 'Slider', init: () => Slider.init() },
+      { name: 'Navigation', init: () => Navigation.init() }
     ];
 
     for (const module of modules) {
@@ -708,11 +708,19 @@ window.addEventListener('unhandledrejection', (e) => {
   kirimNotifKeTelegram(`<b>Unhandled Promise Rejection</b>\n<code>${e.reason?.message || 'Unknown rejection'}</code>`);
 });
 
-// Initialize app when DOM is ready
+// Initialize app when DOM is ready and components are loaded
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => new App().init());
+  document.addEventListener('DOMContentLoaded', () => {
+    // Wait for components to load
+    document.addEventListener('appReady', () => {
+      new App().init();
+    }, { once: true });
+  });
 } else {
-  new App().init();
+  // Wait for components to load
+  document.addEventListener('appReady', () => {
+    new App().init();
+  }, { once: true });
 }
 
 /**
