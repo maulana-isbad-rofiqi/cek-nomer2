@@ -1,280 +1,179 @@
 /**
- * Modern Main Application Script
- * Enhanced UX with smooth interactions and modern features
+ * Lightweight Main Application Script
+ * Optimized for performance and reliability
  */
 
-class App {
-  constructor() {
-    this.initialized = false;
-    this.modules = new Map();
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize all modules
+  initDigitalClock();
+  initSlider();
+  initNavigation();
 
-  async init() {
-    if (this.initialized) return;
+  // Initialize page handlers
+  initCekKuota();
+  initCekMyIp();
+  initCekIpHost();
+  initConverter();
 
-    try {
-      // Show loading state
-      this.showGlobalLoading();
+  // Initialize UX features
+  initSmoothScrolling();
+  initBackToTop();
+  initLoadingScreen();
 
-      // Initialize core modules
-      await this.initCoreModules();
+  console.log('🚀 XL & Axis Tools initialized');
+});
 
-      // Initialize page handlers
-      this.initPageHandlers();
+// Digital Clock
+function initDigitalClock() {
+  const clockElement = document.getElementById('digital-clock');
+  const dateElement = document.getElementById('digital-date');
 
-      // Initialize modern UX features
-      this.initModernUX();
+  if (!clockElement) return;
 
-      // Create floating elements
-      this.createFloatingElements();
-
-      // Mark as initialized
-      this.initialized = true;
-
-      // Hide loading and show app
-      this.hideGlobalLoading();
-
-      console.log('🚀 XL & Axis Tools initialized successfully');
-
-    } catch (error) {
-      console.error('❌ App initialization failed:', error);
-      this.showError('Failed to initialize application');
-    }
-  }
-
-  showGlobalLoading() {
-    const loader = document.getElementById('loading-screen');
-    if (loader) loader.classList.remove('opacity-0');
-  }
-
-  hideGlobalLoading() {
-    const loader = document.getElementById('loading-screen');
-    if (loader) {
-      loader.classList.add('opacity-0');
-      setTimeout(() => loader.remove(), 500);
-    }
-  }
-
-  async initCoreModules() {
-    const modules = [
-      { name: 'DigitalClock', init: () => DigitalClock.init() },
-      { name: 'Slider', init: () => Slider.init() },
-      { name: 'Navigation', init: () => Navigation.init() }
-    ];
-
-    for (const module of modules) {
-      try {
-        await module.init();
-        this.modules.set(module.name, true);
-        console.log(`✅ ${module.name} initialized`);
-      } catch (error) {
-        console.warn(`⚠️ ${module.name} failed to initialize:`, error);
-        this.modules.set(module.name, false);
-      }
-    }
-  }
-
-  initPageHandlers() {
-    const handlers = [
-      { name: 'CekKuota', init: initCekKuota },
-      { name: 'CekMyIp', init: initCekMyIp },
-      { name: 'CekIpHost', init: initCekIpHost },
-      { name: 'Converter', init: initConverter }
-    ];
-
-    handlers.forEach(handler => {
-      try {
-        handler.init();
-        console.log(`✅ ${handler.name} handler initialized`);
-      } catch (error) {
-        console.warn(`⚠️ ${handler.name} handler failed:`, error);
-      }
+  function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('id-ID', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
     });
-  }
 
-  initModernUX() {
-    // Smooth scrolling for anchor links
-    this.initSmoothScrolling();
-
-    // Enhanced form interactions
-    this.initFormEnhancements();
-
-    // Keyboard shortcuts
-    this.initKeyboardShortcuts();
-
-    // Progressive enhancement
-    this.initProgressiveEnhancement();
-
-    // Performance monitoring
-    this.initPerformanceMonitoring();
-  }
-
-  initSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = document.querySelector(anchor.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
+    const date = now.toLocaleDateString('id-ID', {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
     });
+
+    clockElement.textContent = time;
+    if (dateElement) dateElement.textContent = date;
   }
 
-  initFormEnhancements() {
-    // Auto-focus first input
-    const firstInput = document.querySelector('input:not([type="hidden"])');
-    if (firstInput) {
-      setTimeout(() => firstInput.focus(), 1000);
-    }
-
-    // Enhanced input validation feedback
-    document.querySelectorAll('input, textarea').forEach(input => {
-      input.addEventListener('blur', () => {
-        this.validateInput(input);
-      });
-
-      input.addEventListener('input', () => {
-        if (input.classList.contains('invalid')) {
-          this.validateInput(input);
-        }
-      });
-    });
-  }
-
-  validateInput(input) {
-    const isValid = input.checkValidity();
-    input.classList.toggle('invalid', !isValid);
-    input.classList.toggle('valid', isValid && input.value.trim() !== '');
-  }
-
-  initKeyboardShortcuts() {
-    document.addEventListener('keydown', (e) => {
-      // Ctrl/Cmd + K: Focus search
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        const searchInput = document.querySelector('input[type="text"], input[type="tel"]');
-        if (searchInput) searchInput.focus();
-      }
-
-      // Escape: Close modals/overlays
-      if (e.key === 'Escape') {
-        this.closeActiveOverlays();
-      }
-    });
-  }
-
-  closeActiveOverlays() {
-    const overlays = document.querySelectorAll('.sidebar-overlay.active, .modal-overlay:not(.hidden)');
-    overlays.forEach(overlay => {
-      overlay.classList.remove('active');
-      overlay.classList.add('hidden');
-    });
-  }
-
-  initProgressiveEnhancement() {
-    // Add modern features only if supported
-    if ('IntersectionObserver' in window) {
-      this.initLazyLoading();
-    }
-
-    if ('serviceWorker' in navigator) {
-      this.registerServiceWorker();
-    }
-  }
-
-  initLazyLoading() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const element = entry.target;
-          element.classList.add('animate-fade-in');
-          observer.unobserve(element);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.feature-card, .stat-card, .content-section').forEach(card => {
-      observer.observe(card);
-    });
-  }
-
-  async registerServiceWorker() {
-    try {
-      // Service worker registration would go here
-      console.log('📱 Service Worker support detected');
-    } catch (error) {
-      console.warn('⚠️ Service Worker registration failed:', error);
-    }
-  }
-
-  initPerformanceMonitoring() {
-    // Monitor performance
-    if ('performance' in window) {
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          const perfData = performance.getEntriesByType('navigation')[0];
-          console.log(`⚡ Page loaded in ${Math.round(perfData.loadEventEnd - perfData.fetchStart)}ms`);
-        }, 0);
-      });
-    }
-  }
-
-  showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-msg animate-fade-in';
-    errorDiv.innerHTML = `<i class="fa-solid fa-exclamation-triangle"></i> ${message}`;
-    document.body.appendChild(errorDiv);
-
-    setTimeout(() => {
-      errorDiv.remove();
-    }, 5000);
-  }
-
-  createFloatingElements() {
-    const container = document.createElement('div');
-    container.className = 'floating-elements';
-    document.body.appendChild(container);
-
-    const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--success)', 'var(--purple)'];
-    const shapes = ['circle', 'square', 'triangle'];
-
-    for (let i = 0; i < 20; i++) {
-      const element = document.createElement('div');
-      const shape = shapes[Math.floor(Math.random() * shapes.length)];
-      const color = colors[Math.floor(Math.random() * colors.length)];
-
-      element.className = `floating-element floating-${shape}`;
-      element.style.left = Math.random() * 100 + '%';
-      element.style.background = color;
-      element.style.animationDelay = Math.random() * 20 + 's';
-      element.style.animationDuration = (Math.random() * 15 + 15) + 's';
-      element.style.opacity = Math.random() * 0.6 + 0.2;
-
-      container.appendChild(element);
-    }
-  }
+  updateClock();
+  setInterval(updateClock, 1000);
 }
 
-// Enhanced error handling
-window.addEventListener('error', (e) => {
-  console.error('🚨 JavaScript Error:', e.error);
-  kirimNotifKeTelegram(`<b>JavaScript Error</b>\n<code>${e.error?.message || 'Unknown error'}</code>`);
-});
+// Slider
+function initSlider() {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const prevBtn = document.getElementById('prevSlideBtn');
+  const nextBtn = document.getElementById('nextSlideBtn');
 
-window.addEventListener('unhandledrejection', (e) => {
-  console.error('🚨 Unhandled Promise Rejection:', e.reason);
-  kirimNotifKeTelegram(`<b>Unhandled Promise Rejection</b>\n<code>${e.reason?.message || 'Unknown rejection'}</code>`);
-});
+  if (slides.length === 0) return;
 
-// Initialize app when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => new App().init());
-} else {
-  new App().init();
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    slides[index].classList.add('active');
+    if (dots[index]) dots[index].classList.add('active');
+    currentSlide = index;
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  // Event listeners
+  if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+  if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => showSlide(index));
+  });
+
+  // Auto slide
+  setInterval(nextSlide, 5000);
+
+  // Show first slide
+  showSlide(0);
+}
+
+// Navigation
+function initNavigation() {
+  const hamburger = document.getElementById('hamburgerBtn');
+  const sidebar = document.getElementById('sidebarMenu');
+  const overlay = document.getElementById('sidebarOverlay');
+  const closeBtn = document.getElementById('closeSidebarBtn');
+
+  if (!hamburger || !sidebar) return;
+
+  function toggleSidebar() {
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    hamburger.classList.toggle('active');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    hamburger.classList.remove('active');
+  }
+
+  hamburger.addEventListener('click', toggleSidebar);
+  if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  // Close on nav link click
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', closeSidebar);
+  });
+}
+
+// Smooth Scrolling
+function initSmoothScrolling() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+}
+
+// Back to Top
+function initBackToTop() {
+  const backToTopBtn = document.getElementById('back-to-top');
+
+  if (!backToTopBtn) return;
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTopBtn.classList.add('show');
+    } else {
+      backToTopBtn.classList.remove('show');
+    }
+  });
+
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Loading Screen
+function initLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+
+  if (loadingScreen) {
+    // Hide loading screen after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        loadingScreen.classList.add('hide');
+      }, 500);
+    });
+  }
 }
 
 /**
