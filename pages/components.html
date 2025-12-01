@@ -1,78 +1,99 @@
-<!-- Sidebar Overlay -->
-<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<!-- Mobile Menu Overlay -->
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
 
-<!-- Sidebar -->
-<div id="sidebarMenu" class="sidebar">
+<!-- Mobile Sidebar -->
+<aside id="sidebarMenu" class="sidebar" role="navigation" aria-label="Mobile navigation">
   <div class="sidebar-header">
-    <div class="logo">
-      <i class="fa-solid fa-bolt"></i>
-      <span>XL & Axis Tools</span>
+    <div class="sidebar-brand">
+      <div class="logo">
+        <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+        <span>XL & Axis Tools</span>
+      </div>
+      <p class="sidebar-tagline">Platform Modern Tools</p>
     </div>
-    <button id="closeSidebarBtn" class="sidebar-close">
-      <i class="fa-solid fa-xmark"></i>
+    <button id="closeSidebarBtn" class="sidebar-close" aria-label="Close menu">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
     </button>
   </div>
-  
+
   <nav class="sidebar-nav">
-    <a href="#" id="berandaNavBtnMobile" class="sidebar-link active">
-      <i class="fa-solid fa-house"></i>
+    <a href="#" id="berandaNavBtnMobile" class="sidebar-link active" role="menuitem">
+      <i class="fa-solid fa-house" aria-hidden="true"></i>
       <span>Beranda</span>
+      <i class="fa-solid fa-chevron-right link-arrow" aria-hidden="true"></i>
     </a>
-    <a href="#" id="cekKuotaNavBtnMobile" class="sidebar-link">
-      <i class="fa-solid fa-signal"></i>
+    <a href="#" id="cekKuotaNavBtnMobile" class="sidebar-link" role="menuitem">
+      <i class="fa-solid fa-signal" aria-hidden="true"></i>
       <span>Cek Nomer XL & Axis</span>
+      <i class="fa-solid fa-chevron-right link-arrow" aria-hidden="true"></i>
     </a>
-    <a href="#" id="cekMyIpNavBtnMobile" class="sidebar-link">
-      <i class="fa-solid fa-network-wired"></i>
-      <span>Cek MyIp</span>
+    <a href="#" id="cekMyIpNavBtnMobile" class="sidebar-link" role="menuitem">
+      <i class="fa-solid fa-network-wired" aria-hidden="true"></i>
+      <span>Cek My IP</span>
+      <i class="fa-solid fa-chevron-right link-arrow" aria-hidden="true"></i>
     </a>
-    <a href="#" id="cekIpHostNavBtnMobile" class="sidebar-link">
-      <i class="fa-solid fa-magnifying-glass-location"></i>
+    <a href="#" id="cekIpHostNavBtnMobile" class="sidebar-link" role="menuitem">
+      <i class="fa-solid fa-magnifying-glass-location" aria-hidden="true"></i>
       <span>Cek IP Host</span>
+      <i class="fa-solid fa-chevron-right link-arrow" aria-hidden="true"></i>
     </a>
-    <a href="#" id="converterNavBtnMobile" class="sidebar-link">
-      <i class="fa-solid fa-rotate"></i>
+    <a href="#" id="converterNavBtnMobile" class="sidebar-link" role="menuitem">
+      <i class="fa-solid fa-rotate" aria-hidden="true"></i>
       <span>V2Ray Converter</span>
+      <i class="fa-solid fa-chevron-right link-arrow" aria-hidden="true"></i>
     </a>
-    <a href="#" id="aboutNavBtnMobile" class="sidebar-link">
-      <i class="fa-solid fa-circle-info"></i>
-      <span>About</span>
-    </a>
-    <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" rel="noopener noreferrer" 
-       class="btn-primary" style="margin-top: 1.5rem; text-align: center; justify-content: center;">
-      <i class="fa-brands fa-whatsapp"></i>
-      <span>Paket Murah</span>
+    <a href="#" id="aboutNavBtnMobile" class="sidebar-link" role="menuitem">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      <span>Tentang Kami</span>
+      <i class="fa-solid fa-chevron-right link-arrow" aria-hidden="true"></i>
     </a>
   </nav>
-</div>
 
-<!-- Navigation Bar -->
-<nav class="navbar">
+  <div class="sidebar-footer">
+    <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" rel="noopener noreferrer"
+       class="sidebar-cta" role="button">
+      <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+      <span>Paket Murah</span>
+      <i class="fa-solid fa-external-link" aria-hidden="true"></i>
+    </a>
+  </div>
+</aside>
+
+<!-- Desktop Navigation -->
+<header class="navbar" role="banner">
   <div class="navbar-content">
-    <div class="logo">
-      <i class="fa-solid fa-bolt"></i>
-      <span>XL & Axis Tools</span>
+    <div class="navbar-brand">
+      <a href="#" class="logo" aria-label="XL & Axis Tools - Home">
+        <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+        <span>XL & Axis Tools</span>
+      </a>
+      <span class="brand-tagline">Platform Modern</span>
     </div>
-    
-    <div class="nav-menu">
-      <a href="#" id="berandaNavBtnDesktop" class="nav-link active">Beranda</a>
-      <a href="#" id="cekKuotaNavBtnDesktop" class="nav-link">Cek Nomer</a>
-      <a href="#" id="cekMyIpNavBtnDesktop" class="nav-link">My IP</a>
-      <a href="#" id="cekIpHostNavBtnDesktop" class="nav-link">IP Host</a>
-      <a href="#" id="converterNavBtnDesktop" class="nav-link">Converter</a>
-      <a href="#" id="aboutNavBtnDesktop" class="nav-link">About</a>
-      <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" rel="noopener noreferrer" 
-         class="btn-primary">
-        <i class="fa-brands fa-whatsapp"></i>
+
+    <nav class="nav-menu" role="navigation" aria-label="Main navigation">
+      <a href="#" id="berandaNavBtnDesktop" class="nav-link active" role="menuitem">Beranda</a>
+      <a href="#" id="cekKuotaNavBtnDesktop" class="nav-link" role="menuitem">Cek Nomer</a>
+      <a href="#" id="cekMyIpNavBtnDesktop" class="nav-link" role="menuitem">My IP</a>
+      <a href="#" id="cekIpHostNavBtnDesktop" class="nav-link" role="menuitem">IP Host</a>
+      <a href="#" id="converterNavBtnDesktop" class="nav-link" role="menuitem">Converter</a>
+      <a href="#" id="aboutNavBtnDesktop" class="nav-link" role="menuitem">About</a>
+    </nav>
+
+    <div class="navbar-actions">
+      <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" rel="noopener noreferrer"
+         class="btn-primary" role="button" aria-label="Dapatkan paket murah via WhatsApp">
+        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
         <span>Paket Murah</span>
       </a>
-    </div>
 
-    <button id="hamburgerBtn" class="hamburger">
-      <i class="fa-solid fa-bars"></i>
-    </button>
+      <button id="hamburgerBtn" class="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
   </div>
-</nav>
+</header>
 
 <!-- Digital Clock -->
 <div id="clock-container" class="clock-container">

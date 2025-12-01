@@ -1,135 +1,231 @@
-<!-- Beranda Section -->
-<div id="berandaSection">
-  <!-- Image Slider -->
-  <div class="slider-container fade" style="animation-delay: 0.1s;">
-    <div class="slide active" style="background-image: url('https://blob.cloudcomputing.id/images/1c171b3f-d8ef-439d-a451-82e5c062b932/xl-axiata-l-min.jpg');"></div>
-    <div class="slide" style="background-image: url('https://i.postimg.cc/26D1812b/Go4DOdfa-YAAul-Jg-scaled.webp');"></div>
-    <div class="slide" style="background-image: url('https://i.postimg.cc/nzGCsnPC/xl-xtra-unlimited-turbo.jpg');"></div>
+<!-- Hero Section -->
+<section id="berandaSection" class="relative">
+  <!-- Hero Image Slider -->
+  <div class="slider-container fade animate-fade-in" style="animation-delay: 0.1s;">
+    <div class="slide active" style="background-image: url('https://blob.cloudcomputing.id/images/1c171b3f-d8ef-439d-a451-82e5c062b932/xl-axiata-l-min.jpg');">
+      <div class="slide-overlay">
+        <div class="slide-content">
+          <h1 class="slide-title">XL & Axis Tools</h1>
+          <p class="slide-subtitle">Platform Modern untuk Cek Nomer & Kuota</p>
+          <div class="slide-badges">
+            <span class="badge badge-primary">Real-time</span>
+            <span class="badge badge-success">100% Aman</span>
+            <span class="badge badge-accent">24/7 Online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide" style="background-image: url('https://i.postimg.cc/26D1812b/Go4DOdfa-YAAul-Jg-scaled.webp');">
+      <div class="slide-overlay">
+        <div class="slide-content">
+          <h1 class="slide-title">Paket Unlimited</h1>
+          <p class="slide-subtitle">Nikmati kecepatan internet tanpa batas</p>
+          <div class="slide-badges">
+            <span class="badge badge-secondary">Unlimited</span>
+            <span class="badge badge-primary">High Speed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide" style="background-image: url('https://i.postimg.cc/nzGCsnPC/xl-xtra-unlimited-turbo.jpg');">
+      <div class="slide-overlay">
+        <div class="slide-content">
+          <h1 class="slide-title">XL XTRA Turbo</h1>
+          <p class="slide-subtitle">Pengalaman internet turbo yang luar biasa</p>
+          <div class="slide-badges">
+            <span class="badge badge-accent">Turbo</span>
+            <span class="badge badge-success">Premium</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="slider-dots"></div>
-    <div class="slider-arrow left" id="prevSlideBtn">
+    <button class="slider-arrow left" id="prevSlideBtn" aria-label="Previous slide">
       <i class="fa-solid fa-chevron-left"></i>
-    </div>
-    <div class="slider-arrow right" id="nextSlideBtn">
+    </button>
+    <button class="slider-arrow right" id="nextSlideBtn" aria-label="Next slide">
       <i class="fa-solid fa-chevron-right"></i>
-    </div>
-  </div>
-  
-  <!-- Stats Section -->
-  <div class="content-section fade" style="animation-delay: 0.2s;">
-    <div class="section-title">
-      <i class="fa-solid fa-chart-line"></i>
-      Statistik Realtime
-    </div>
-    <div class="info-grid" style="margin-top: 2rem;">
-      <div class="info-item" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(99, 102, 241, 0.15)); border: 1px solid rgba(0, 212, 255, 0.4); position: relative; overflow: hidden;">
-        <div style="position: absolute; top: -50%; right: -50%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%); animation: pulse 3s ease-in-out infinite;"></div>
-        <i class="fa-solid fa-users" style="color: var(--primary); font-size: 1.5rem; filter: drop-shadow(0 0 10px var(--primary));"></i>
-        <div>
-          <div style="font-size: 1.5rem; font-weight: 700; color: white; background: linear-gradient(135deg, var(--primary), white); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">10K+</div>
-          <div style="color: var(--text-muted); font-size: 0.875rem;">User Aktif</div>
-        </div>
-      </div>
-      <div class="info-item" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(34, 197, 94, 0.15)); border: 1px solid rgba(16, 185, 129, 0.4); position: relative; overflow: hidden;">
-        <div style="position: absolute; top: -50%; right: -50%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%); animation: pulse 3s ease-in-out infinite 1s;"></div>
-        <i class="fa-solid fa-shield-check" style="color: var(--success); font-size: 1.5rem; filter: drop-shadow(0 0 10px var(--success));"></i>
-        <div>
-          <div style="font-size: 1.5rem; font-weight: 700; color: white; background: linear-gradient(135deg, var(--success), white); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">100%</div>
-          <div style="color: var(--text-muted); font-size: 0.875rem;">Keamanan Terjamin</div>
-        </div>
-      </div>
-      <div class="info-item" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(251, 146, 60, 0.15)); border: 1px solid rgba(249, 115, 22, 0.4); position: relative; overflow: hidden;">
-        <div style="position: absolute; top: -50%; right: -50%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%); animation: pulse 3s ease-in-out infinite 2s;"></div>
-        <i class="fa-solid fa-bolt" style="color: var(--accent); font-size: 1.5rem; filter: drop-shadow(0 0 10px var(--accent));"></i>
-        <div>
-          <div style="font-size: 1.5rem; font-weight: 700; color: white; background: linear-gradient(135deg, var(--accent), white); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">24/7</div>
-          <div style="color: var(--text-muted); font-size: 0.875rem;">Layanan Online</div>
-        </div>
-      </div>
-      <div class="info-item" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(168, 85, 247, 0.15)); border: 1px solid rgba(139, 92, 246, 0.4); position: relative; overflow: hidden;">
-        <div style="position: absolute; top: -50%; right: -50%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%); animation: pulse 3s ease-in-out infinite 1.5s;"></div>
-        <i class="fa-solid fa-mobile-screen" style="color: #8b5cf6; font-size: 1.5rem; filter: drop-shadow(0 0 10px #8b5cf6);"></i>
-        <div>
-          <div style="font-size: 1.5rem; font-weight: 700; color: white; background: linear-gradient(135deg, #8b5cf6, white); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">XL & Axis</div>
-          <div style="color: var(--text-muted); font-size: 0.875rem;">Operator Didukung</div>
-        </div>
-      </div>
-    </div>
+    </button>
   </div>
 
-  <!-- Feature Cards Grid -->
-  <div class="feature-grid">
-    <div id="cekKuotaCardBtn" class="feature-card fade" style="animation-delay: 0.2s;">
-      <div class="feature-icon">
-        <i class="fa-solid fa-signal"></i>
-      </div>
-      <h3 class="feature-title">Cek Nomer XL & Axis</h3>
-      <p class="feature-desc">Lihat detail nomer, masa aktif, dan sisa kuota paket Anda secara real-time dengan akurasi tinggi.</p>
-    </div>
-    
-    <div id="cekMyIpCardBtn" class="feature-card fade" style="animation-delay: 0.3s;">
-      <div class="feature-icon">
-        <i class="fa-solid fa-network-wired"></i>
-      </div>
-      <h3 class="feature-title">Cek MyIp</h3>
-      <p class="feature-desc">Lihat alamat IP publik, lokasi geografis detail, ISP, dan informasi jaringan lengkap Anda.</p>
-    </div>
-    
-    <div id="cekIpHostCardBtn" class="feature-card fade" style="animation-delay: 0.4s;">
-      <div class="feature-icon">
-        <i class="fa-solid fa-magnifying-glass-location"></i>
-      </div>
-      <h3 class="feature-title">Cek IP Host</h3>
-      <p class="feature-desc">Cari alamat IP (A/AAAA record) dari sebuah domain atau hostname dengan detail provider dan lokasi.</p>
-    </div>
-    
-    <div id="converterCardBtn" class="feature-card fade" style="animation-delay: 0.5s;">
-      <div class="feature-icon">
-        <i class="fa-solid fa-rotate"></i>
-      </div>
-      <h3 class="feature-title">V2Ray Converter</h3>
-      <p class="feature-desc">Konversi link V2Ray (vmess, vless, trojan, ss) ke format Clash atau JSON dengan parsing otomatis.</p>
+  <!-- Stats Dashboard -->
+  <div class="content-section fade animate-fade-in" style="animation-delay: 0.2s;">
+    <div class="section-header">
+      <h2 id="beranda-title" class="section-title">
+        <i class="fa-solid fa-chart-line"></i>
+        Dashboard Statistik
+      </h2>
+      <p class="section-desc">Data real-time penggunaan platform kami</p>
     </div>
 
-    <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" rel="noopener noreferrer"
-       class="feature-card fade" style="animation-delay: 0.6s; text-decoration: none;">
-      <div class="feature-icon">
-        <i class="fa-solid fa-tags"></i>
+    <div class="stats-grid">
+      <div class="stat-card stat-primary">
+        <div class="stat-icon">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">User Aktif</div>
+        </div>
+        <div class="stat-glow"></div>
       </div>
-      <h3 class="feature-title">Paket Murah</h3>
-      <p class="feature-desc">Dapatkan penawaran paket internet data dengan harga terbaik dan termurah langsung dari admin.</p>
-    </a>
-    
-    <div id="aboutCardBtn" class="feature-card fade" style="animation-delay: 0.7s;">
-      <div class="feature-icon">
-        <i class="fa-solid fa-circle-info"></i>
+
+      <div class="stat-card stat-success">
+        <div class="stat-icon">
+          <i class="fa-solid fa-shield-check"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Keamanan</div>
+        </div>
+        <div class="stat-glow"></div>
       </div>
-      <h3 class="feature-title">Tentang Kami</h3>
-      <p class="feature-desc">Informasi lebih lanjut mengenai tools gratis, fitur unggulan, dan layanan yang kami sediakan untuk Anda.</p>
+
+      <div class="stat-card stat-accent">
+        <div class="stat-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Online</div>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
+
+      <div class="stat-card stat-purple">
+        <div class="stat-icon">
+          <i class="fa-solid fa-mobile-screen"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">XL & Axis</div>
+          <div class="stat-label">Operator</div>
+        </div>
+        <div class="stat-glow"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Quick Actions Panel -->
-  <div class="content-section fade" style="animation-delay: 0.3s;">
-    <div class="section-title">
-      <i class="fa-solid fa-rocket"></i>
-      Aksi Cepat
-    </div>
-    <p class="section-desc">Mulai gunakan fitur-fitur kami dengan mudah dan cepat</p>
-    <div class="form-group" style="justify-content: center;">
-      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-        <button class="btn-primary" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem;">
-          <i class="fa-solid fa-play"></i>
-          <span>Mulai Cek Kuota</span>
+  <!-- Features Grid -->
+  <div class="features-section">
+    <div class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fa-solid fa-tools"></i>
+          Fitur Unggulan
+        </h2>
+        <p class="section-desc">Eksplorasi berbagai tools canggih yang kami sediakan</p>
+      </div>
+
+      <div class="features-grid">
+        <button id="cekKuotaCardBtn" class="feature-card animate-fade-in" style="animation-delay: 0.2s;">
+          <div class="feature-icon">
+            <i class="fa-solid fa-signal"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">Cek Nomer XL & Axis</h3>
+            <p class="feature-desc">Lihat detail nomer, masa aktif, dan sisa kuota paket Anda secara real-time dengan akurasi tinggi.</p>
+          </div>
+          <div class="feature-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
         </button>
-        <button class="btn-primary" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: linear-gradient(135deg, var(--secondary), var(--accent));">
+
+        <button id="cekMyIpCardBtn" class="feature-card animate-fade-in" style="animation-delay: 0.3s;">
+          <div class="feature-icon">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">Cek My IP</h3>
+            <p class="feature-desc">Lihat alamat IP publik, lokasi geografis detail, ISP, dan informasi jaringan lengkap Anda.</p>
+          </div>
+          <div class="feature-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </button>
+
+        <button id="cekIpHostCardBtn" class="feature-card animate-fade-in" style="animation-delay: 0.4s;">
+          <div class="feature-icon">
+            <i class="fa-solid fa-magnifying-glass-location"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">Cek IP Host</h3>
+            <p class="feature-desc">Cari alamat IP (A/AAAA record) dari sebuah domain atau hostname dengan detail provider dan lokasi.</p>
+          </div>
+          <div class="feature-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </button>
+
+        <button id="converterCardBtn" class="feature-card animate-fade-in" style="animation-delay: 0.5s;">
+          <div class="feature-icon">
+            <i class="fa-solid fa-rotate"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">V2Ray Converter</h3>
+            <p class="feature-desc">Konversi link V2Ray (vmess, vless, trojan, ss) ke format Clash atau JSON dengan parsing otomatis.</p>
+          </div>
+          <div class="feature-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </button>
+
+        <a href="https://chat.whatsapp.com/H4wD01XzngRJo3ORjKKV3V" target="_blank" rel="noopener noreferrer"
+           class="feature-card animate-fade-in" style="animation-delay: 0.6s;">
+          <div class="feature-icon">
+            <i class="fa-solid fa-tags"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">Paket Murah</h3>
+            <p class="feature-desc">Dapatkan penawaran paket internet data dengan harga terbaik dan termurah langsung dari admin.</p>
+          </div>
+          <div class="feature-arrow">
+            <i class="fa-solid fa-external-link"></i>
+          </div>
+        </a>
+
+        <button id="aboutCardBtn" class="feature-card animate-fade-in" style="animation-delay: 0.7s;">
+          <div class="feature-icon">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">Tentang Kami</h3>
+            <p class="feature-desc">Informasi lebih lanjut mengenai tools gratis, fitur unggulan, dan layanan yang kami sediakan untuk Anda.</p>
+          </div>
+          <div class="feature-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions CTA -->
+  <div class="cta-section">
+    <div class="content-section fade animate-fade-in" style="animation-delay: 0.3s;">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fa-solid fa-rocket"></i>
+          Mulai Sekarang
+        </h2>
+        <p class="section-desc">Gunakan fitur-fitur kami dengan mudah dan cepat</p>
+      </div>
+
+      <div class="cta-buttons">
+        <button class="btn-primary btn-large" onclick="document.getElementById('cekKuotaCardBtn').click()">
+          <i class="fa-solid fa-play"></i>
+          <span>Cek Kuota Sekarang</span>
+        </button>
+
+        <button class="btn-secondary btn-large" onclick="document.getElementById('cekMyIpCardBtn').click()">
           <i class="fa-solid fa-location-dot"></i>
           <span>Cek Lokasi IP</span>
         </button>
-        <button class="btn-primary" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: linear-gradient(135deg, var(--success), #059669);">
+
+        <button class="btn-success btn-large" onclick="document.getElementById('converterCardBtn').click()">
           <i class="fa-solid fa-share-nodes"></i>
-          <span>Share Tool</span>
+          <span>Convert V2Ray</span>
         </button>
       </div>
     </div>
   </div>
-</div>
+</section>

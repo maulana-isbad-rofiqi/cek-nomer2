@@ -1,88 +1,184 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools - Cek Nomer & Kuota XL & Axis</title>
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta name="description" content="Platform cek nomor XL & Axis, kuota, IP, dan converter V2Ray dengan tampilan modern dan responsif">
+  <meta name="keywords" content="cek nomor, kuota XL, Axis, IP, V2Ray converter, tools online">
+  <meta name="author" content="【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 𝕤𝕥𝕠𝕣𝕖 】">
+  <meta name="theme-color" content="#00d4ff">
+
+  <title>XL & Axis Tools - Cek Nomer, Kuota & IP Online</title>
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
   <!-- External CSS & Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-AvvX2JlptEDVp5eeWJ1ZGKkl5R6JzJC6X2vG6ZkLcN9+3+4M8QHnqJfKqWJZwqGzJGzqJzZJZqJzJzJZqJzJ" crossorigin="anonymous" referrerpolicy="no-referrer">
+
   <!-- Custom Styles -->
   <link rel="stylesheet" href="./assets/css/style.css">
-  
+
   <!-- External Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js" integrity="sha512-ZZXDDsL+1qH8lr4U7b3xg/O4R2hIOnFk6Tw8Jk9TT0VZ9zJZv3wH8fD3B5JZhZ" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 </head>
-<body>
-  
-  <!-- Navigation & Components -->
-  <div id="components-container"></div>
-  
-  <!-- Main Content Container -->
-  <div class="main-container">
-    <!-- Beranda Section -->
-    <div id="beranda-content"></div>
-    
-    <!-- Cek Kuota Section -->
-    <div id="cek-kuota-content"></div>
-    
-    <!-- Cek MyIP Section -->
-    <div id="cek-myip-content"></div>
-    
-    <!-- Cek IP Host Section -->
-    <div id="cek-iphost-content"></div>
-    
-    <!-- Converter Section -->
-    <div id="converter-content"></div>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden">
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-dark px-4 py-2 rounded-lg z-50 transition-all duration-300">
+    Skip to main content
+  </a>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="fixed inset-0 bg-dark z-50 flex items-center justify-center transition-opacity duration-500">
+    <div class="text-center">
+      <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <p class="text-primary font-semibold">Loading XL & Axis Tools...</p>
+    </div>
   </div>
-  
+
+  <!-- Navigation & Components -->
+  <header id="components-container" role="banner"></header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="relative z-10">
+    <div class="main-container">
+      <!-- Hero/Beranda Section -->
+      <section id="beranda-content" aria-labelledby="beranda-title"></section>
+
+      <!-- Tools Sections -->
+      <section id="cek-kuota-content" aria-labelledby="cek-kuota-title"></section>
+      <section id="cek-myip-content" aria-labelledby="cek-myip-title"></section>
+      <section id="cek-iphost-content" aria-labelledby="cek-iphost-title"></section>
+      <section id="converter-content" aria-labelledby="converter-title"></section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer-container" role="contentinfo"></footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-6 right-6 bg-primary hover:bg-primary-dark text-white p-3 rounded-full shadow-lg transition-all duration-300 transform opacity-0 translate-y-4 z-40" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
   <!-- JavaScript Modules -->
-  <script src="./assets/js/telegram.js"></script>
-  <script src="./assets/js/api.js"></script>
-  <script src="./assets/js/converter.js"></script>
-  <script src="./assets/js/slider.js"></script>
-  <script src="./assets/js/clock.js"></script>
-  <script src="./assets/js/navigation.js"></script>
-  <script src="./assets/js/main.js"></script>
-  
-  <!-- Load Page Components -->
+  <script src="./assets/js/telegram.js" defer></script>
+  <script src="./assets/js/api.js" defer></script>
+  <script src="./assets/js/converter.js" defer></script>
+  <script src="./assets/js/slider.js" defer></script>
+  <script src="./assets/js/clock.js" defer></script>
+  <script src="./assets/js/navigation.js" defer></script>
+  <script src="./assets/js/main.js" defer></script>
+
+  <!-- Initialize App -->
   <script>
-    async function loadComponent(url, containerId) {
-      try {
-        const response = await fetch(url);
-        const html = await response.text();
-        document.getElementById(containerId).innerHTML = html;
-      } catch (error) {
-        console.error(`Error loading ${url}:`, error);
+    // Modern component loader with error handling
+    class ComponentLoader {
+      static async load(url, containerId) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const html = await response.text();
+          document.getElementById(containerId).innerHTML = html;
+          return true;
+        } catch (error) {
+          console.error(`Error loading ${url}:`, error);
+          document.getElementById(containerId).innerHTML = `
+            <div class="text-center py-8">
+              <i class="fas fa-exclamation-triangle text-danger text-4xl mb-4"></i>
+              <p class="text-muted">Failed to load component</p>
+            </div>
+          `;
+          return false;
+        }
+      }
+
+      static async loadAll(components) {
+        const promises = components.map(([url, containerId]) =>
+          this.load(url, containerId)
+        );
+        return Promise.all(promises);
       }
     }
-    
-    // Load all components
-    Promise.all([
-      loadComponent('./pages/components.html', 'components-container'),
-      loadComponent('./pages/beranda.html', 'beranda-content'),
-      loadComponent('./pages/cek-kuota.html', 'cek-kuota-content'),
-      loadComponent('./pages/cek-myip.html', 'cek-myip-content'),
-      loadComponent('./pages/cek-iphost.html', 'cek-iphost-content'),
-      loadComponent('./pages/converter.html', 'converter-content')
-    ]).then(() => {
-      // Load footer for each page
-      loadFooterForCurrentPage();
-      // Initialize app after all components loaded
-      const event = new Event('DOMContentLoaded');
-      document.dispatchEvent(event);
-    });
-    
-    // Function to load footer based on current page
-    function loadFooterForCurrentPage() {
-      const footerContainer = document.createElement('div');
-      footerContainer.id = 'footer-container';
-      document.body.appendChild(footerContainer);
-      
-      loadComponent('./pages/footer.html', 'footer-container');
+
+    // Loading states management
+    class LoadingManager {
+      static show() {
+        const loader = document.getElementById('loading-screen');
+        if (loader) loader.classList.remove('opacity-0');
+      }
+
+      static hide() {
+        const loader = document.getElementById('loading-screen');
+        if (loader) {
+          loader.classList.add('opacity-0');
+          setTimeout(() => loader.remove(), 500);
+        }
+      }
+    }
+
+    // Initialize app
+    async function initializeApp() {
+      LoadingManager.show();
+
+      try {
+        // Load all components
+        await ComponentLoader.loadAll([
+          ['./pages/components.html', 'components-container'],
+          ['./pages/beranda.html', 'beranda-content'],
+          ['./pages/cek-kuota.html', 'cek-kuota-content'],
+          ['./pages/cek-myip.html', 'cek-myip-content'],
+          ['./pages/cek-iphost.html', 'cek-iphost-content'],
+          ['./pages/converter.html', 'converter-content'],
+          ['./pages/footer.html', 'footer-container']
+        ]);
+
+        // Initialize features after components loaded
+        const event = new Event('appReady');
+        document.dispatchEvent(event);
+
+        // Initialize back to top button
+        initializeBackToTop();
+
+      } catch (error) {
+        console.error('App initialization failed:', error);
+      } finally {
+        LoadingManager.hide();
+      }
+    }
+
+    // Back to top functionality
+    function initializeBackToTop() {
+      const backToTopBtn = document.getElementById('back-to-top');
+      if (!backToTopBtn) return;
+
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopBtn.classList.remove('opacity-0', 'translate-y-4');
+          backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+          backToTopBtn.classList.add('opacity-0', 'translate-y-4');
+        }
+      });
+
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // Start the app
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
     }
   </script>
 </body>

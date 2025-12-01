@@ -1,23 +1,281 @@
 /**
- * Main Application Script
- * Initializes all modules and handles user interactions
+ * Modern Main Application Script
+ * Enhanced UX with smooth interactions and modern features
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize all modules
-  DigitalClock.init();
-  Slider.init();
-  Navigation.init();
-  
-  // Initialize page handlers
-  initCekKuota();
-  initCekMyIp();
-  initCekIpHost();
-  initConverter();
-  
-  // Create floating elements
-  createFloatingElements();
+class App {
+  constructor() {
+    this.initialized = false;
+    this.modules = new Map();
+  }
+
+  async init() {
+    if (this.initialized) return;
+
+    try {
+      // Show loading state
+      this.showGlobalLoading();
+
+      // Initialize core modules
+      await this.initCoreModules();
+
+      // Initialize page handlers
+      this.initPageHandlers();
+
+      // Initialize modern UX features
+      this.initModernUX();
+
+      // Create floating elements
+      this.createFloatingElements();
+
+      // Mark as initialized
+      this.initialized = true;
+
+      // Hide loading and show app
+      this.hideGlobalLoading();
+
+      console.log('🚀 XL & Axis Tools initialized successfully');
+
+    } catch (error) {
+      console.error('❌ App initialization failed:', error);
+      this.showError('Failed to initialize application');
+    }
+  }
+
+  showGlobalLoading() {
+    const loader = document.getElementById('loading-screen');
+    if (loader) loader.classList.remove('opacity-0');
+  }
+
+  hideGlobalLoading() {
+    const loader = document.getElementById('loading-screen');
+    if (loader) {
+      loader.classList.add('opacity-0');
+      setTimeout(() => loader.remove(), 500);
+    }
+  }
+
+  async initCoreModules() {
+    const modules = [
+      { name: 'DigitalClock', init: () => DigitalClock.init() },
+      { name: 'Slider', init: () => Slider.init() },
+      { name: 'Navigation', init: () => Navigation.init() }
+    ];
+
+    for (const module of modules) {
+      try {
+        await module.init();
+        this.modules.set(module.name, true);
+        console.log(`✅ ${module.name} initialized`);
+      } catch (error) {
+        console.warn(`⚠️ ${module.name} failed to initialize:`, error);
+        this.modules.set(module.name, false);
+      }
+    }
+  }
+
+  initPageHandlers() {
+    const handlers = [
+      { name: 'CekKuota', init: initCekKuota },
+      { name: 'CekMyIp', init: initCekMyIp },
+      { name: 'CekIpHost', init: initCekIpHost },
+      { name: 'Converter', init: initConverter }
+    ];
+
+    handlers.forEach(handler => {
+      try {
+        handler.init();
+        console.log(`✅ ${handler.name} handler initialized`);
+      } catch (error) {
+        console.warn(`⚠️ ${handler.name} handler failed:`, error);
+      }
+    });
+  }
+
+  initModernUX() {
+    // Smooth scrolling for anchor links
+    this.initSmoothScrolling();
+
+    // Enhanced form interactions
+    this.initFormEnhancements();
+
+    // Keyboard shortcuts
+    this.initKeyboardShortcuts();
+
+    // Progressive enhancement
+    this.initProgressiveEnhancement();
+
+    // Performance monitoring
+    this.initPerformanceMonitoring();
+  }
+
+  initSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  }
+
+  initFormEnhancements() {
+    // Auto-focus first input
+    const firstInput = document.querySelector('input:not([type="hidden"])');
+    if (firstInput) {
+      setTimeout(() => firstInput.focus(), 1000);
+    }
+
+    // Enhanced input validation feedback
+    document.querySelectorAll('input, textarea').forEach(input => {
+      input.addEventListener('blur', () => {
+        this.validateInput(input);
+      });
+
+      input.addEventListener('input', () => {
+        if (input.classList.contains('invalid')) {
+          this.validateInput(input);
+        }
+      });
+    });
+  }
+
+  validateInput(input) {
+    const isValid = input.checkValidity();
+    input.classList.toggle('invalid', !isValid);
+    input.classList.toggle('valid', isValid && input.value.trim() !== '');
+  }
+
+  initKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+      // Ctrl/Cmd + K: Focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[type="text"], input[type="tel"]');
+        if (searchInput) searchInput.focus();
+      }
+
+      // Escape: Close modals/overlays
+      if (e.key === 'Escape') {
+        this.closeActiveOverlays();
+      }
+    });
+  }
+
+  closeActiveOverlays() {
+    const overlays = document.querySelectorAll('.sidebar-overlay.active, .modal-overlay:not(.hidden)');
+    overlays.forEach(overlay => {
+      overlay.classList.remove('active');
+      overlay.classList.add('hidden');
+    });
+  }
+
+  initProgressiveEnhancement() {
+    // Add modern features only if supported
+    if ('IntersectionObserver' in window) {
+      this.initLazyLoading();
+    }
+
+    if ('serviceWorker' in navigator) {
+      this.registerServiceWorker();
+    }
+  }
+
+  initLazyLoading() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          element.classList.add('animate-fade-in');
+          observer.unobserve(element);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .stat-card, .content-section').forEach(card => {
+      observer.observe(card);
+    });
+  }
+
+  async registerServiceWorker() {
+    try {
+      // Service worker registration would go here
+      console.log('📱 Service Worker support detected');
+    } catch (error) {
+      console.warn('⚠️ Service Worker registration failed:', error);
+    }
+  }
+
+  initPerformanceMonitoring() {
+    // Monitor performance
+    if ('performance' in window) {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          console.log(`⚡ Page loaded in ${Math.round(perfData.loadEventEnd - perfData.fetchStart)}ms`);
+        }, 0);
+      });
+    }
+  }
+
+  showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-msg animate-fade-in';
+    errorDiv.innerHTML = `<i class="fa-solid fa-exclamation-triangle"></i> ${message}`;
+    document.body.appendChild(errorDiv);
+
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 5000);
+  }
+
+  createFloatingElements() {
+    const container = document.createElement('div');
+    container.className = 'floating-elements';
+    document.body.appendChild(container);
+
+    const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--success)', 'var(--purple)'];
+    const shapes = ['circle', 'square', 'triangle'];
+
+    for (let i = 0; i < 20; i++) {
+      const element = document.createElement('div');
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      element.className = `floating-element floating-${shape}`;
+      element.style.left = Math.random() * 100 + '%';
+      element.style.background = color;
+      element.style.animationDelay = Math.random() * 20 + 's';
+      element.style.animationDuration = (Math.random() * 15 + 15) + 's';
+      element.style.opacity = Math.random() * 0.6 + 0.2;
+
+      container.appendChild(element);
+    }
+  }
+}
+
+// Enhanced error handling
+window.addEventListener('error', (e) => {
+  console.error('🚨 JavaScript Error:', e.error);
+  kirimNotifKeTelegram(`<b>JavaScript Error</b>\n<code>${e.error?.message || 'Unknown error'}</code>`);
 });
+
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('🚨 Unhandled Promise Rejection:', e.reason);
+  kirimNotifKeTelegram(`<b>Unhandled Promise Rejection</b>\n<code>${e.reason?.message || 'Unknown rejection'}</code>`);
+});
+
+// Initialize app when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => new App().init());
+} else {
+  new App().init();
+}
 
 /**
  * Create floating decorative elements
