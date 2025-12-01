@@ -62,14 +62,14 @@
   <!-- Main Content -->
   <main id="main-content" class="relative z-10">
     <div class="main-container">
-      <!-- Hero/Beranda Section -->
+      <!-- Hero/Beranda Section - Visible by default -->
       <section id="beranda-content" aria-labelledby="beranda-title"></section>
 
-      <!-- Tools Sections -->
-      <section id="cek-kuota-content" aria-labelledby="cek-kuota-title"></section>
-      <section id="cek-myip-content" aria-labelledby="cek-myip-title"></section>
-      <section id="cek-iphost-content" aria-labelledby="cek-iphost-title"></section>
-      <section id="converter-content" aria-labelledby="converter-title"></section>
+      <!-- Tools Sections - Hidden by default -->
+      <section id="cek-kuota-content" class="hidden" aria-labelledby="cek-kuota-title"></section>
+      <section id="cek-myip-content" class="hidden" aria-labelledby="cek-myip-title"></section>
+      <section id="cek-iphost-content" class="hidden" aria-labelledby="cek-iphost-title"></section>
+      <section id="converter-content" class="hidden" aria-labelledby="converter-title"></section>
     </div>
   </main>
 
@@ -156,6 +156,12 @@
         // Initialize features after components loaded
         const event = new Event('appReady');
         document.dispatchEvent(event);
+
+        // Make sure beranda is visible and tools are hidden
+        const berandaSection = document.getElementById('beranda-content');
+        if (berandaSection) {
+          berandaSection.classList.remove('hidden');
+        }
 
         // Initialize back to top button
         initializeBackToTop();

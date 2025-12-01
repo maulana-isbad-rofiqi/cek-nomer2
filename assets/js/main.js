@@ -101,21 +101,32 @@ class App {
   }
 
   async initCoreModules() {
-    const modules = [
-      { name: 'DigitalClock', init: () => DigitalClock.init() },
-      { name: 'Slider', init: () => Slider.init() },
-      { name: 'Navigation', init: () => Navigation.init() }
-    ];
-
-    for (const module of modules) {
-      try {
-        await module.init();
-        this.modules.set(module.name, true);
-        console.log(`✅ ${module.name} initialized`);
-      } catch (error) {
-        console.warn(`⚠️ ${module.name} failed to initialize:`, error);
-        this.modules.set(module.name, false);
+    // Initialize modules one by one with error handling
+    try {
+      if (typeof DigitalClock !== 'undefined' && DigitalClock.init) {
+        DigitalClock.init();
+        console.log('✅ DigitalClock initialized');
       }
+    } catch (error) {
+      console.warn('⚠️ DigitalClock failed:', error);
+    }
+
+    try {
+      if (typeof Slider !== 'undefined' && Slider.init) {
+        Slider.init();
+        console.log('✅ Slider initialized');
+      }
+    } catch (error) {
+      console.warn('⚠️ Slider failed:', error);
+    }
+
+    try {
+      if (typeof Navigation !== 'undefined' && Navigation.init) {
+        Navigation.init();
+        console.log('✅ Navigation initialized');
+      }
+    } catch (error) {
+      console.warn('⚠️ Navigation failed:', error);
     }
   }
 

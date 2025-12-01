@@ -1,156 +1,138 @@
 /**
- * Navigation Module
- * Handles page navigation and sidebar
+ * Simple Navigation Module
+ * Direct navigation to sections
  */
 
 const Navigation = {
-  sections: {},
-  navBtns: {},
-  sidebar: null,
-  overlay: null,
-
   init() {
-    // Initialize navigation buttons
-    this.navBtns = {
-      beranda: {
-        desktop: document.getElementById('berandaNavBtnDesktop'),
-        mobile: document.getElementById('berandaNavBtnMobile'),
-        card: null
-      },
-      cekKuota: {
-        desktop: document.getElementById('cekKuotaNavBtnDesktop'),
-        mobile: document.getElementById('cekKuotaNavBtnMobile'),
-        card: document.getElementById('cekKuotaCardBtn')
-      },
-      cekMyIp: {
-        desktop: document.getElementById('cekMyIpNavBtnDesktop'),
-        mobile: document.getElementById('cekMyIpNavBtnMobile'),
-        card: document.getElementById('cekMyIpCardBtn')
-      },
-      cekIpHost: {
-        desktop: document.getElementById('cekIpHostNavBtnDesktop'),
-        mobile: document.getElementById('cekIpHostNavBtnMobile'),
-        card: document.getElementById('cekIpHostCardBtn')
-      },
-      converter: {
-        desktop: document.getElementById('converterNavBtnDesktop'),
-        mobile: document.getElementById('converterNavBtnMobile'),
-        card: document.getElementById('converterCardBtn')
-      },
-      about: {
-        desktop: document.getElementById('aboutNavBtnDesktop'),
-        mobile: document.getElementById('aboutNavBtnMobile'),
-        card: document.getElementById('aboutCardBtn')
-      }
-    };
-
-    this.sidebar = document.getElementById('sidebarMenu');
-    this.overlay = document.getElementById('sidebarOverlay');
-    this.modal = document.getElementById('aboutModal');
-
     this.bindEvents();
+    console.log('Navigation initialized');
   },
 
   bindEvents() {
+    // Hamburger menu
     const hamburger = document.getElementById('hamburgerBtn');
     const closeSidebar = document.getElementById('closeSidebarBtn');
+    const sidebar = document.getElementById('sidebarMenu');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        sidebar?.classList.add('active');
+        overlay?.classList.add('active');
+      });
+    }
+
+    if (closeSidebar) {
+      closeSidebar.addEventListener('click', () => {
+        sidebar?.classList.remove('active');
+        overlay?.classList.remove('active');
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', () => {
+        sidebar?.classList.remove('active');
+        overlay?.classList.remove('active');
+      });
+    }
+
+    // Navigation buttons - direct scroll to sections
+    this.bindNavButton('berandaNavBtnDesktop', 'beranda-content');
+    this.bindNavButton('berandaNavBtnMobile', 'beranda-content');
+    this.bindNavButton('cekKuotaNavBtnDesktop', 'cek-kuota-content');
+    this.bindNavButton('cekKuotaNavBtnMobile', 'cek-kuota-content');
+    this.bindNavButton('cekMyIpNavBtnDesktop', 'cek-myip-content');
+    this.bindNavButton('cekMyIpNavBtnMobile', 'cek-myip-content');
+    this.bindNavButton('cekIpHostNavBtnDesktop', 'cek-iphost-content');
+    this.bindNavButton('cekIpHostNavBtnMobile', 'cek-iphost-content');
+    this.bindNavButton('converterNavBtnDesktop', 'converter-content');
+    this.bindNavButton('converterNavBtnMobile', 'converter-content');
+
+    // Feature cards
+    this.bindNavButton('cekKuotaCardBtn', 'cek-kuota-content');
+    this.bindNavButton('cekMyIpCardBtn', 'cek-myip-content');
+    this.bindNavButton('cekIpHostCardBtn', 'cek-iphost-content');
+    this.bindNavButton('converterCardBtn', 'converter-content');
+
+    // About modal
+    this.bindModalButton('aboutNavBtnDesktop');
+    this.bindModalButton('aboutNavBtnMobile');
+    this.bindModalButton('aboutCardBtn');
+
+    // Modal close
     const closeModal = document.getElementById('closeModalBtn');
+    const modal = document.getElementById('aboutModal');
 
-    if (hamburger) hamburger.addEventListener('click', () => this.openSidebar());
-    if (closeSidebar) closeSidebar.addEventListener('click', () => this.closeSidebar());
-    if (this.overlay) this.overlay.addEventListener('click', () => this.closeSidebar());
-    if (closeModal) closeModal.addEventListener('click', () => this.closeAboutModal());
-    if (this.modal) {
-      this.modal.addEventListener('click', (e) => {
-        if (e.target === this.modal) this.closeAboutModal();
+    if (closeModal) {
+      closeModal.addEventListener('click', () => {
+        modal?.classList.add('hidden');
       });
     }
 
-    Object.keys(this.navBtns).forEach(page => {
-      const btns = this.navBtns[page];
-      
-      if (btns.desktop) {
-        btns.desktop.addEventListener('click', (e) => {
-          e.preventDefault();
-          if (page === 'about') {
-            this.openAboutModal();
-          } else {
-            this.showPage(page);
-          }
-        });
-      }
-
-      if (btns.mobile) {
-        btns.mobile.addEventListener('click', (e) => {
-          e.preventDefault();
-          if (page === 'about') {
-            this.openAboutModal();
-          } else {
-            this.showPage(page);
-          }
-        });
-      }
-
-      if (btns.card) {
-        btns.card.addEventListener('click', () => {
-          if (page === 'about') {
-            this.openAboutModal();
-          } else {
-            this.showPage(page);
-          }
-        });
-      }
-    });
-  },
-
-  showPage(page) {
-    // Update URL hash for navigation
-    window.location.hash = page;
-
-    // Update active navigation states
-    Object.keys(this.navBtns).forEach(key => {
-      const btns = this.navBtns[key];
-      const isActive = key === page;
-
-      if (btns.desktop) {
-        btns.desktop.classList.toggle('active', isActive);
-      }
-      if (btns.mobile) {
-        btns.mobile.classList.toggle('active', isActive);
-      }
-    });
-
-    // Scroll to section if it exists
-    const sectionElement = document.getElementById(`${page}Section`) ||
-                          document.getElementById(`${page}-content`) ||
-                          document.querySelector(`[id*="${page}"]`);
-
-    if (sectionElement) {
-      sectionElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
       });
     }
-
-    this.closeSidebar();
   },
 
-  openSidebar() {
-    if (this.sidebar) this.sidebar.classList.add('active');
-    if (this.overlay) this.overlay.classList.add('active');
+  bindNavButton(buttonId, targetId) {
+    const button = document.getElementById(buttonId);
+    if (button) {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.scrollToSection(targetId);
+        this.closeSidebar();
+      });
+    }
+  },
+
+  bindModalButton(buttonId) {
+    const button = document.getElementById(buttonId);
+    const modal = document.getElementById('aboutModal');
+
+    if (button && modal) {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.remove('hidden');
+        this.closeSidebar();
+      });
+    }
+  },
+
+  scrollToSection(targetId) {
+    const target = document.getElementById(targetId);
+    if (target) {
+      // Make sure the section is visible
+      target.classList.remove('hidden');
+
+      // Hide other tool sections
+      const sections = ['cek-kuota-content', 'cek-myip-content', 'cek-iphost-content', 'converter-content'];
+      sections.forEach(sectionId => {
+        if (sectionId !== targetId) {
+          const section = document.getElementById(sectionId);
+          if (section) section.classList.add('hidden');
+        }
+      });
+
+      // Scroll to the section
+      setTimeout(() => {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 100);
+    }
   },
 
   closeSidebar() {
-    if (this.sidebar) this.sidebar.classList.remove('active');
-    if (this.overlay) this.overlay.classList.remove('active');
-  },
+    const sidebar = document.getElementById('sidebarMenu');
+    const overlay = document.getElementById('sidebarOverlay');
 
-  openAboutModal() {
-    if (this.modal) this.modal.classList.remove('hidden');
-    this.closeSidebar();
-  },
-
-  closeAboutModal() {
-    if (this.modal) this.modal.classList.add('hidden');
+    sidebar?.classList.remove('active');
+    overlay?.classList.remove('active');
   }
 };
